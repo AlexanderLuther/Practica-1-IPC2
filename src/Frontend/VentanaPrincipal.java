@@ -1,5 +1,8 @@
 package Frontend;
 import Backend.CambiadorPaneles;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
     
@@ -10,17 +13,43 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private PanelCargarArchivo panelArchivo = new PanelCargarArchivo();
     private PanelAcercaDe panelInformacion = new PanelAcercaDe();
     private PanelInicio panelInicio = new PanelInicio();
+    private PanelDevolucion panelDevolucion = new PanelDevolucion();
+    private PanelListado panelListado = new PanelListado();
+    private PanelReportes panelReportes = new PanelReportes();
     
     //Manejadores auxiliares
     private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();
+    private JFileChooser selectorArchivos = new JFileChooser();
+    private FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto", "txt");
     
+    //Variables usadas por la clase
+    String direccion;
+    int eleccionFileChooser;
     
     public VentanaPrincipal() {    
         initComponents();
         this.setLocationRelativeTo(this); 
         this.setExtendedState(MAXIMIZED_BOTH);
-        cambiadorPaneles.cambiarPanel(panelPrincipal, panelInicio);
+        cambiadorPaneles.cambiarPanel(panelPrincipal, panelInicio);   
+    }
+    
+    /*
+    Metodo encargado de abrir un JFileChooser y obtener la ruta del 
+    archivo seleccionado para su posterior procesamiento en el sistema.
+    Se devuelve un boleano basado en si se selecciono algun archivo o se 
+    cancelo la carga del mismo.
+    */
+    private boolean cargarArchivo(){
+        selectorArchivos.setFileFilter(filtro);
+        selectorArchivos.setApproveButtonText("Cargar Archivo");
+        eleccionFileChooser = selectorArchivos.showOpenDialog(null);
         
+        if(eleccionFileChooser == selectorArchivos.APPROVE_OPTION){
+            direccion = selectorArchivos.getSelectedFile().getPath();
+            //Leer el archivo
+            return true;
+        } 
+        else return false;     
     }
 
     @SuppressWarnings("unchecked")
@@ -39,9 +68,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonCargarArchivo = new rojerusan.RSButtonIconI();
         panelNuevo = new javax.swing.JPanel();
         botonNuevoEstudiante = new rojerusan.RSButtonIconI();
-        botonNuevoPrestamo = new rojerusan.RSButtonIconI();
+        botonDevolucion = new rojerusan.RSButtonIconI();
         botonNuevoLibro = new rojerusan.RSButtonIconI();
         jLabel3 = new javax.swing.JLabel();
+        botonNuevoPrestamo = new rojerusan.RSButtonIconI();
+        botonNuevoListado = new rojerusan.RSButtonIconI();
+        botonReporte = new rojerusan.RSButtonIconI();
         etiquetaBaseDatos = new javax.swing.JLabel();
         etiquetaNuevo = new javax.swing.JLabel();
         panelMas = new javax.swing.JPanel();
@@ -121,6 +153,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1.add(jPanel7, gridBagConstraints);
 
         panelMenu.setBackground(new java.awt.Color(204, 204, 204));
+        panelMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
 
         panelCargaArchivo.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -168,16 +201,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        botonNuevoPrestamo.setBackground(new java.awt.Color(204, 204, 204));
-        botonNuevoPrestamo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/impuesto.png"))); // NOI18N
-        botonNuevoPrestamo.setText("PRESTAMO");
-        botonNuevoPrestamo.setBorderPainted(false);
-        botonNuevoPrestamo.setColorHover(new java.awt.Color(0, 153, 153));
-        botonNuevoPrestamo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botonNuevoPrestamo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botonNuevoPrestamo.addActionListener(new java.awt.event.ActionListener() {
+        botonDevolucion.setBackground(new java.awt.Color(204, 204, 204));
+        botonDevolucion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-devolver-libro-80.png"))); // NOI18N
+        botonDevolucion.setText("DEVOLUCION");
+        botonDevolucion.setBorderPainted(false);
+        botonDevolucion.setColorHover(new java.awt.Color(0, 153, 153));
+        botonDevolucion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonDevolucion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonDevolucion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonNuevoPrestamoActionPerformed(evt);
+                botonDevolucionActionPerformed(evt);
             }
         });
 
@@ -198,13 +231,55 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("NUEVO");
 
+        botonNuevoPrestamo.setBackground(new java.awt.Color(204, 204, 204));
+        botonNuevoPrestamo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/impuesto.png"))); // NOI18N
+        botonNuevoPrestamo.setText("PRESTAMO");
+        botonNuevoPrestamo.setBorderPainted(false);
+        botonNuevoPrestamo.setColorHover(new java.awt.Color(0, 153, 153));
+        botonNuevoPrestamo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonNuevoPrestamo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonNuevoPrestamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNuevoPrestamoActionPerformed(evt);
+            }
+        });
+
+        botonNuevoListado.setBackground(new java.awt.Color(204, 204, 204));
+        botonNuevoListado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/marca-de-verificacion.png"))); // NOI18N
+        botonNuevoListado.setText("LISTADO");
+        botonNuevoListado.setBorderPainted(false);
+        botonNuevoListado.setColorHover(new java.awt.Color(0, 153, 153));
+        botonNuevoListado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonNuevoListado.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonNuevoListado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNuevoListadoActionPerformed(evt);
+            }
+        });
+
+        botonReporte.setBackground(new java.awt.Color(204, 204, 204));
+        botonReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-reporte-de-negocios-512.png"))); // NOI18N
+        botonReporte.setText("REPORTES");
+        botonReporte.setBorderPainted(false);
+        botonReporte.setColorHover(new java.awt.Color(0, 153, 153));
+        botonReporte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonReporte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelNuevoLayout = new javax.swing.GroupLayout(panelNuevo);
         panelNuevo.setLayout(panelNuevoLayout);
         panelNuevoLayout.setHorizontalGroup(
             panelNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botonNuevoEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonNuevoEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
             .addComponent(botonNuevoLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botonNuevoPrestamo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonDevolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonNuevoListado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonNuevoPrestamo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelNuevoLayout.createSequentialGroup()
                     .addGap(107, 107, 107)
@@ -218,14 +293,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(botonNuevoEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonNuevoLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonNuevoListado, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
                 .addComponent(botonNuevoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
             .addGroup(panelNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelNuevoLayout.createSequentialGroup()
                     .addGap(97, 97, 97)
                     .addComponent(jLabel3)
-                    .addContainerGap(102, Short.MAX_VALUE)))
+                    .addContainerGap(297, Short.MAX_VALUE)))
         );
 
         etiquetaBaseDatos.setFont(new java.awt.Font("Bitstream Charter", 1, 18)); // NOI18N
@@ -324,15 +405,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
+                .addGap(20, 20, 20)
                 .addComponent(etiquetaBaseDatos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelCargaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(20, 20, 20)
                 .addComponent(etiquetaNuevo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addComponent(panelNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(etiquetaMas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelMas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,7 +452,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     private void botonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCargarArchivoActionPerformed
-        cambiadorPaneles.cambiarPanel(panelPrincipal, panelCargaArchivo);
+        direccion = "";
+        if(cargarArchivo()) cambiadorPaneles.cambiarPanel(panelPrincipal, panelArchivo);
+        else JOptionPane.showMessageDialog(rootPane, "No se selecciono ningun archivo");
     }//GEN-LAST:event_botonCargarArchivoActionPerformed
 
     private void botonNuevoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoLibroActionPerformed
@@ -382,9 +465,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelEstudiante);
     }//GEN-LAST:event_botonNuevoEstudianteActionPerformed
 
-    private void botonNuevoPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoPrestamoActionPerformed
-        cambiadorPaneles.cambiarPanel(panelPrincipal, panelPrestamo);
-    }//GEN-LAST:event_botonNuevoPrestamoActionPerformed
+    private void botonDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDevolucionActionPerformed
+        cambiadorPaneles.cambiarPanel(panelPrincipal, panelDevolucion);
+    }//GEN-LAST:event_botonDevolucionActionPerformed
 
     private void botonAcecaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcecaDeActionPerformed
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelInformacion);
@@ -393,6 +476,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void botonInformacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInformacion1ActionPerformed
        cambiadorPaneles.cambiarPanel(panelPrincipal, panelInicio);
     }//GEN-LAST:event_botonInformacion1ActionPerformed
+
+    private void botonNuevoPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoPrestamoActionPerformed
+        cambiadorPaneles.cambiarPanel(panelPrincipal, panelPrestamo);
+    }//GEN-LAST:event_botonNuevoPrestamoActionPerformed
+
+    private void botonNuevoListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoListadoActionPerformed
+        cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
+    }//GEN-LAST:event_botonNuevoListadoActionPerformed
+
+    private void botonReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReporteActionPerformed
+        cambiadorPaneles.cambiarPanel(panelPrincipal, panelReportes);
+    }//GEN-LAST:event_botonReporteActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -429,10 +524,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojerusan.RSButtonIconI botonAcecaDe;
     private rojerusan.RSButtonIconI botonCargarArchivo;
+    private rojerusan.RSButtonIconI botonDevolucion;
     private rojerusan.RSButtonIconI botonInformacion1;
     private rojerusan.RSButtonIconI botonNuevoEstudiante;
     private rojerusan.RSButtonIconI botonNuevoLibro;
+    private rojerusan.RSButtonIconI botonNuevoListado;
     private rojerusan.RSButtonIconI botonNuevoPrestamo;
+    private rojerusan.RSButtonIconI botonReporte;
     private rojerusan.RSButtonIconI botonSalir;
     private javax.swing.JLabel etiquetaBaseDatos;
     private javax.swing.JLabel etiquetaMas;
