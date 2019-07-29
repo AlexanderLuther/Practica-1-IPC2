@@ -1,6 +1,5 @@
 package Frontend;
 import Backend.CambiadorPaneles;
-import Backend.ConvertidorFecha;
 import Backend.Libro;
 import Backend.ManejadorArchivosBinarios;
 import java.util.Date;
@@ -11,7 +10,6 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
     
       //Varaibles e instancias de la clase
       private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();
-      private ConvertidorFecha conversor = new ConvertidorFecha();
       private ManejadorArchivosBinarios<Libro> guardarLibro = new ManejadorArchivosBinarios<>();
       private Libro libro;
       private String codigo;
@@ -43,7 +41,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         textoEditorial = new rojeru_san.RSMTextFull();
         jPanel9 = new javax.swing.JPanel();
         etiquetaFecha = new javax.swing.JLabel();
-        textoFecha = new javax.swing.JFormattedTextField();
+        selectorFecha = new rojeru_san.componentes.RSDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         etiquetaCodigo = new javax.swing.JLabel();
@@ -79,23 +77,25 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etiquetaTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(textoTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addGap(3, 3, 3)
+                .addComponent(textoTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)))
         );
 
         jPanel4.setBackground(new java.awt.Color(0, 153, 153));
@@ -111,7 +111,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         etiquetaEditorial.setFont(new java.awt.Font("DejaVu Serif", 1, 18)); // NOI18N
         etiquetaEditorial.setForeground(new java.awt.Color(255, 255, 255));
         etiquetaEditorial.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaEditorial.setText("Editorial");
+        etiquetaEditorial.setText("Editorial:");
         etiquetaEditorial.setToolTipText("");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -119,19 +119,22 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(27, 27, 27)
                 .addComponent(etiquetaEditorial)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(textoEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(9, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(textoEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(etiquetaEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         jPanel9.setBackground(new java.awt.Color(0, 153, 153));
@@ -139,17 +142,13 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         etiquetaFecha.setFont(new java.awt.Font("DejaVu Serif", 1, 18)); // NOI18N
         etiquetaFecha.setForeground(new java.awt.Color(255, 255, 255));
         etiquetaFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaFecha.setText("Fecha");
+        etiquetaFecha.setText("Fecha:");
         etiquetaFecha.setToolTipText("");
 
-        textoFecha.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 153), null));
-        textoFecha.setForeground(new java.awt.Color(0, 112, 192));
-        try {
-            textoFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        textoFecha.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        selectorFecha.setColorBackground(new java.awt.Color(204, 204, 204));
+        selectorFecha.setColorButtonHover(new java.awt.Color(153, 153, 153));
+        selectorFecha.setColorDiaActual(new java.awt.Color(0, 153, 153));
+        selectorFecha.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -157,17 +156,19 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addComponent(etiquetaFecha)
-                .addGap(53, 53, 53)
-                .addComponent(textoFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(selectorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(362, 362, 362))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(selectorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(etiquetaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
@@ -183,7 +184,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(etiquetaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(textoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,9 +229,8 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(etiquetaCodigo)
-                .addGap(40, 40, 40)
+                .addGap(46, 46, 46)
                 .addComponent(textoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -253,9 +253,8 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(textoCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 21, Short.MAX_VALUE)
+                .addComponent(textoCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,7 +374,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
             titulo = textoTitulo.getText();
             cantidadCopias = Integer.parseInt(textoCantidad.getText());
             editorial = textoEditorial.getText();
-            fechaPublicacion = conversor.convetirFecha(textoFecha.getText());
+            fechaPublicacion = selectorFecha.getDatoFecha();
             libro = new Libro(codigo, autor, titulo, cantidadCopias, fechaPublicacion, editorial);
             guardarLibro.crearArchivo(libro, "LIBRO", libro.getCodigo(), ".lib");
             textoAutor.setText("");
@@ -383,7 +382,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
             textoEditorial.setText("");
             textoCodigo.setText("");
             textoCantidad.setText("");
-            textoFecha.setText("");
+            selectorFecha.setDatoFecha(null);
             JOptionPane.showMessageDialog(this, "Libro Agregado Exitosamente");
         }
     }//GEN-LAST:event_aceptarActionPerformed
@@ -409,11 +408,11 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private rojeru_san.componentes.RSDateChooser selectorFecha;
     private rojeru_san.RSMTextFull textoAutor;
     private rojeru_san.RSMTextFull textoCantidad;
     private javax.swing.JFormattedTextField textoCodigo;
     private rojeru_san.RSMTextFull textoEditorial;
-    private javax.swing.JFormattedTextField textoFecha;
     private rojeru_san.RSMTextFull textoTitulo;
     // End of variables declaration//GEN-END:variables
 }

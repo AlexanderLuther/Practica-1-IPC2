@@ -1,6 +1,5 @@
 package Frontend;
 
-import Backend.ConvertidorFecha;
 import Backend.Estudiante;
 import Backend.ManejadorArchivosBinarios;
 import java.util.Date;
@@ -9,7 +8,6 @@ import javax.swing.JOptionPane;
 public class PanelNuevoEstudiante extends javax.swing.JPanel {
 
     //Variables e instancias de la clase
-    private ConvertidorFecha conversor = new ConvertidorFecha();
     private ManejadorArchivosBinarios<Estudiante> guardarEstudiante = new ManejadorArchivosBinarios<>();
     private Estudiante estudiante;
     private int carne;
@@ -39,7 +37,7 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
         aceptar = new rojerusan.RSButtonIconI();
         jPanel9 = new javax.swing.JPanel();
         etiquetaFecha = new javax.swing.JLabel();
-        textoFechaNacimiento = new javax.swing.JFormattedTextField();
+        selectorFecha = new rojeru_san.componentes.RSDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -198,14 +196,10 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
         etiquetaFecha.setText("Fecha");
         etiquetaFecha.setToolTipText("");
 
-        textoFechaNacimiento.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 153), null));
-        textoFechaNacimiento.setForeground(new java.awt.Color(0, 112, 192));
-        try {
-            textoFechaNacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        textoFechaNacimiento.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        selectorFecha.setColorBackground(new java.awt.Color(204, 204, 204));
+        selectorFecha.setColorButtonHover(new java.awt.Color(153, 153, 153));
+        selectorFecha.setColorDiaActual(new java.awt.Color(0, 153, 153));
+        selectorFecha.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -213,17 +207,18 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addComponent(etiquetaFecha)
-                .addGap(53, 53, 53)
-                .addComponent(textoFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addComponent(selectorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(342, 342, 342))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(etiquetaFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(selectorFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
@@ -307,9 +302,9 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
             .addGap(0, 422, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 2, Short.MAX_VALUE)
+                    .addGap(0, 1, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 1, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
     /*
@@ -326,12 +321,12 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
         else{
             nombre = textoNombre.getText();
             carne = Integer.parseInt(textoCarne.getText());
-            fechaNacimiento = conversor.convetirFecha(textoFechaNacimiento.getText());
+            fechaNacimiento = selectorFecha.getDatoFecha();
             codigoCarrera = selectorCarrera.getSelectedIndex() + 1;
             estudiante = new Estudiante(nombre, carne, codigoCarrera, fechaNacimiento, null, null);
             guardarEstudiante.crearArchivo(estudiante, "ESTUDIANTE", String.valueOf(estudiante.getCarne()), ".est");
             textoCarne.setText(null);
-            textoFechaNacimiento.setText(null);
+            selectorFecha.setDatoFecha(null);
             textoNombre.setText(null);
             selectorCarrera.setSelectedIndex(0);
             JOptionPane.showMessageDialog(this, "Estudiante Agregado Exitosamente");
@@ -356,8 +351,8 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JComboBox<String> selectorCarrera;
+    private rojeru_san.componentes.RSDateChooser selectorFecha;
     private javax.swing.JFormattedTextField textoCarne;
-    private javax.swing.JFormattedTextField textoFechaNacimiento;
     private rojeru_san.RSMTextFull textoNombre;
     // End of variables declaration//GEN-END:variables
 }

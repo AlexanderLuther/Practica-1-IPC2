@@ -31,11 +31,12 @@ public class ManejadorArchivoEntrada {
     private Libro libro;
     private Estudiante estudiante;
     private Prestamo prestamo;
-    private RealizarPrestamo realizarPrestamo = new RealizarPrestamo();
+    private ManejadorPrestamo realizarPrestamo = new ManejadorPrestamo();
     private ManejadorArchivoContador archivoContador = new ManejadorArchivoContador();
     private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
+    private Date fechaLimite;
     
     
     /*
@@ -73,7 +74,6 @@ public class ManejadorArchivoEntrada {
         hilo.start();
     }
     
-    
     /*
     Metodo encargado de crear un directorio denominado "Archivos". Valida si el directorio ya existe,
     de lo contrario crea el mismo.
@@ -85,6 +85,9 @@ public class ManejadorArchivoEntrada {
         }
     }
  
+    
+    
+    
     public void leerLibro(BufferedReader buffer, String linea) throws IOException {
         String codigo = null;
         String autor = "Desconocido";
@@ -142,47 +145,36 @@ public class ManejadorArchivoEntrada {
         archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, Integer.toString(estudiante.getCarne()), ".est");
     }
     
+    
+    
+    
+    
     public void leerPrestamo(BufferedReader buffer, String linea) throws IOException {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String codigo = null;
         int carnet = 0;
         Date fechaPrestamo = null;
         for (int i = 0; i < 3; i++) {
-                linea  = buffer.readLine();
-                switch (i) {
-                    case 0:
-                        codigo = linea.replaceAll(CODIGOLIBRO, "");
-                        break;
-                    case 1:
-                        carnet = Integer.parseInt(linea.replaceAll(CARNET, ""));
-                        break;
-                    case 2:
+            linea  = buffer.readLine();
+            switch (i) {
+                case 0:
+                    codigo = linea.replaceAll(CODIGOLIBRO, "");
+                break;
+                case 1:
+                    carnet = Integer.parseInt(linea.replaceAll(CARNET, ""));
+                    break;
+                case 2:
                     try {
-                        fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
-                    } catch (ParseException ex) {
+                       fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
+                    } 
+                    catch (ParseException ex) {
                         System.out.println("Error de Formato fecha");
                     }
-                        break;
-                }
+                    break;
+            }
         }
-        prestamo = new Prestamo(codigo, carnet, fechaPrestamo);
-        System.out.println("Prestamo: " + prestamo.getCodigolibro());
-        System.out.println("Prestamo: " + formato.format(fechaPrestamo));
-        realizarPrestamo.comprobarEstudiante(prestamo.getCarnet(), prestamo.getCodigolibro());
-        //guardarPrestamo(prestamo); Comento esto para que realice de una vez la comprobación del Prestamo
+        String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo);
+        System.out.println(mensaje);
     }
     
-    public void guardarPrestamo(Prestamo prestamoGuargar) {
-        int accountant = 0;
-        File archivoCont = new File("ContadorPrestamo.bin");
-        if(archivoCont.exists()){
-            accountant = ManejadorArchivoContador.leerContador("ContadorPrestamo.bin");
-            System.out.println(accountant);
-        } else {
-            ManejadorArchivoContador.crearNuevoContador(0, "ContadorPrestamo.bin");
-            System.out.println("Creado");
-        }
-        archivoPrestamo.crearArchivo(prestamo, PRESTAMO, Integer.toString(accountant), ".pre");
-        System.out.println("Archivo Creado");
-    }    
 }

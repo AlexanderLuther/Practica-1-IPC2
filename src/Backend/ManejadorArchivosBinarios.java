@@ -34,6 +34,10 @@ public class ManejadorArchivosBinarios <T> {
         return true;
     }
       
+    /*
+    Metodo encargado de leer archivos binarios, recibe como parametos la ruta del archivo deseado
+    y devuelve el objeto contenido dentro del mismo.
+    */
     public T leerArchivo(String pathInicial, String pathNombreArchivo, String tipoDeArchivoPath){
         String ruta = "./Archivos/" + pathInicial + "(" + pathNombreArchivo + ")" + tipoDeArchivoPath;
         File file =  new File(ruta);
@@ -41,8 +45,9 @@ public class ManejadorArchivosBinarios <T> {
                 ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);) {
             return (T) inputStream.readObject();
         } catch (IOException e) {
-            System.out.println(pathNombreArchivo);
-            System.out.println("Error de conexion con el archivo");
+           System.out.println(pathNombreArchivo);
+           System.out.println("Error de conexion con el archivo");
+           return null;
         } catch (ClassNotFoundException e) {
             System.out.println("El objeto no tiene la forma de una pieza");
         }

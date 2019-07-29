@@ -11,7 +11,7 @@ public class Estudiante implements Serializable, Comparable<Estudiante>{
     private int carne;
     private int codigoCarrera;
     private Date fechaNacimiento;
-    private List<Prestamo> prestamosHechos = new ArrayList<>();
+    private List<Prestamo> historialPrestamos = new ArrayList<>();
     private List<Prestamo> prestamosActuales = new ArrayList<>();
 
     public Estudiante(String nombre, int carne, int codigoCarrera, Date fechaNacimiento, List<Prestamo> prestamosHechos, List<Prestamo> prestamosActuales){
@@ -19,7 +19,7 @@ public class Estudiante implements Serializable, Comparable<Estudiante>{
         this.carne = carne;
         this.codigoCarrera = codigoCarrera;
         this.fechaNacimiento = fechaNacimiento;
-        this.prestamosHechos = prestamosHechos;
+        this.historialPrestamos = prestamosHechos;
         this.prestamosActuales = prestamosActuales;
     }
 
@@ -39,8 +39,8 @@ public class Estudiante implements Serializable, Comparable<Estudiante>{
         return fechaNacimiento;
     }
 
-    public List<Prestamo> getPrestamosHechos() {
-        return prestamosHechos;
+    public List<Prestamo> getHistorialPrestamos() {
+        return historialPrestamos;
     }
 
     public List<Prestamo> getPrestamosActuales() {
@@ -63,8 +63,8 @@ public class Estudiante implements Serializable, Comparable<Estudiante>{
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public void setPrestamosHechos(List<Prestamo> prestamosHechos) {
-        this.prestamosHechos = prestamosHechos;
+    public void setHistorialPrestamos(List<Prestamo> historialPrestamos) {
+        this.historialPrestamos = historialPrestamos;
     }
 
     public void setPrestamosActuales(List<Prestamo> prestamosActuales) {
