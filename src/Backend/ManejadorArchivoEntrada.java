@@ -31,6 +31,7 @@ public class ManejadorArchivoEntrada {
     private Libro libro;
     private Estudiante estudiante;
     private Prestamo prestamo;
+    private RealizarPrestamo realizarPrestamo = new RealizarPrestamo();
     private ManejadorArchivoContador archivoContador = new ManejadorArchivoContador();
     private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
@@ -86,8 +87,8 @@ public class ManejadorArchivoEntrada {
  
     public void leerLibro(BufferedReader buffer, String linea) throws IOException {
         String codigo = null;
-        String autor = null;
-        String titulo = null;
+        String autor = "Desconocido";
+        String titulo = "Sin Titulo";
         int cantidadDeCopias = 0;
         for (int i = 0; i < 4; i++) {
             linea  = buffer.readLine();
@@ -167,7 +168,8 @@ public class ManejadorArchivoEntrada {
         prestamo = new Prestamo(codigo, carnet, fechaPrestamo);
         System.out.println("Prestamo: " + prestamo.getCodigolibro());
         System.out.println("Prestamo: " + formato.format(fechaPrestamo));
-        guardarPrestamo(prestamo);
+        realizarPrestamo.comprobarEstudiante(prestamo.getCarnet(), prestamo.getCodigolibro());
+        //guardarPrestamo(prestamo); Comento esto para que realice de una vez la comprobación del Prestamo
     }
     
     public void guardarPrestamo(Prestamo prestamoGuargar) {
