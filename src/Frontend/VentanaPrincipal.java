@@ -1,5 +1,10 @@
 package Frontend;
 import Backend.CambiadorPaneles;
+import Backend.ManejadorArchivoEntrada;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,10 +26,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();
     private JFileChooser selectorArchivos = new JFileChooser();
     private FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto", "txt");
+    private ManejadorArchivoEntrada  archivoEntrada = new ManejadorArchivoEntrada();
     
     //Variables usadas por la clase
-    String direccion;
-    int eleccionFileChooser;
+    private File direccion;
+    private int eleccionFileChooser;
     
     public VentanaPrincipal() {    
         initComponents();
@@ -34,10 +40,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
     
     /*
-    Metodo encargado de abrir un JFileChooser y obtener la ruta del 
-    archivo seleccionado para su posterior procesamiento en el sistema.
-    Se devuelve un boleano basado en si se selecciono algun archivo o se 
-    cancelo la carga del mismo.
+    Metodo encargado de abrir un JFileChooser y obtener la ruta del  archivo seleccionado para su posterior procesamiento en el sistema.
+    Se llama al metodo leerArchivo de la clase ManejadorArchivoEntrada pasando como parametro la ruta obtenida y el inicio del hilo. Por
+    ultimo Se devuelve un boleano basado en si se selecciono algun archivo o se cancelo la carga del mismo. 
     */
     private boolean cargarArchivo(){
         selectorArchivos.setFileFilter(filtro);
@@ -45,8 +50,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         eleccionFileChooser = selectorArchivos.showOpenDialog(null);
         
         if(eleccionFileChooser == selectorArchivos.APPROVE_OPTION){
-            direccion = selectorArchivos.getSelectedFile().getPath();
-            //Leer el archivo
+            direccion = selectorArchivos.getSelectedFile();
+            try {
+                archivoEntrada.leerArchivo(direccion, 0l);//EN 0l el tiempo de espera del hilo
+            } catch (IOException ex) {
+                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return true;
         } 
         else return false;     
@@ -452,7 +461,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     private void botonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCargarArchivoActionPerformed
-        direccion = "";
         if(cargarArchivo()) cambiadorPaneles.cambiarPanel(panelPrincipal, panelArchivo);
         else JOptionPane.showMessageDialog(rootPane, "No se selecciono ningun archivo");
     }//GEN-LAST:event_botonCargarArchivoActionPerformed
@@ -482,6 +490,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonNuevoPrestamoActionPerformed
 
     private void botonNuevoListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoListadoActionPerformed
+        panelListado.limpiarListaEstudiantes();
+        panelListado.limpiarListaLibros();
+        panelListado.llenarListaEstudiantes();
+        panelListado.llenarListaLibros();
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
     }//GEN-LAST:event_botonNuevoListadoActionPerformed
 

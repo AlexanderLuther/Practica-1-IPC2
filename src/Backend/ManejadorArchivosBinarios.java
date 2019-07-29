@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistema.bibliotecario.backed.controladorArchivos;
+package Backend;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,18 +9,23 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author bryan
- */
-public class CrearArchivo <T> {
+
+public class ManejadorArchivosBinarios <T> {
     
-    public  boolean crearArchivo(T archivo, String pathInicial,  String pathNombreArchivo, String tipoDeArchivoPath) {
-        String ruta = "./Archivos/" + pathInicial + "(" + pathNombreArchivo + ")" + tipoDeArchivoPath;
+    /*
+    Metodo encargado de crear un archivo binario basandose en los atributos que recibe
+    como parametros.
+        tipoObjeto: Libro, Estudiante, Prestamo
+        tipoArchivo: LIBRO, ESTUDIANTE, PRESTAMO
+        identificadorUnico: codigoLibro, carne.
+        extensionArchivo: .lib, .est, .pre
+    */
+    public  boolean crearArchivo(T tipoObjeto, String tipoArchivo,  String identificadorUnico, String extensionArchivo) {
+        String ruta = "./Archivos/" + tipoArchivo + "(" + identificadorUnico + ")" + extensionArchivo;
         File file = new File(ruta);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file);
                 ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);) {
-            outputStream.writeObject(archivo);
+            outputStream.writeObject(tipoObjeto);
             outputStream.close();
         } catch (IOException e) {
             System.out.println("Error");
@@ -33,7 +33,7 @@ public class CrearArchivo <T> {
         }
         return true;
     }
-    
+      
     public T leerArchivo(String pathInicial, String pathNombreArchivo, String tipoDeArchivoPath){
         String ruta = "./Archivos/" + pathInicial + "(" + pathNombreArchivo + ")" + tipoDeArchivoPath;
         File file =  new File(ruta);
@@ -48,35 +48,41 @@ public class CrearArchivo <T> {
         }
         return null;
     }
-    
-    public  List<T> leerListaDeArchivos(String tipoDeArchivoPath) {
-        //averiguar en que carpeta estoy
-        //encontrar un listado con todos los archivos de esta carpeta
-        //por cada archivo ver si termina en .bin
-        //	si es verdadero entonces ingresarlo a la lista
-        //	sin no no hacer nada
+   
+    /*
+    Metodo encargado de obtener todos los archivos contenidos dentro de un directorio que cumplan
+    con la extension recibida como parametro. Se abre un flujo de entreda en el directorio deseado
+    y se obtiene un listado con todos los nombres de los archivos deseados. Por cada nombre obtenido
+    se crea un nuevo flujo de entrada y se almacena el archivo binario dentro de una lista. Por ultimo
+    se regresa la lista.
+    */
+    public  List<T> leerListaArchivos(String extensionArchivo) {
+        List<T> lista = new ArrayList<>();
         File folder = new File("./Archivos/");
-        List<T> list = new ArrayList<>();
         if (folder.isDirectory()) {
             String[] files = folder.list();
-            for (String fileName : files) {
-                if (fileName.endsWith(tipoDeArchivoPath)) {
-                    File childFile = new File(fileName);
-                    try (FileInputStream fileInputStream = new FileInputStream(childFile); ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);) {
-                        list.add((T) inputStream.readObject());
-                    } catch (IOException e) {
+            
+            for (String fileName : files){
+                if (fileName.endsWith(extensionArchivo)){      
+                    File childFile = new File("./Archivos/"+fileName);
+                    
+                    try(FileInputStream fileInputStream = new FileInputStream(childFile);
+                        ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);){
+                            lista.add((T) inputStream.readObject());
+                        } 
+                    catch (IOException e){
                         System.out.println(e.getMessage());;
                         e.printStackTrace();
                         System.out.println("Error de conexion con el archivo");
                         System.out.println("Error en leer el archivo");				
                     } catch (ClassNotFoundException e) {
-                        System.out.println("El objeto no tiene la forma de un " + tipoDeArchivoPath );
+                        System.out.println("El objeto no tiene la forma de un " + extensionArchivo );
                     }
                 }
             }
         }
-        return list;
+        return lista;
     }
     
+}    
     
-}

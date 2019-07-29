@@ -10,8 +10,6 @@ public class SistemaBibliotecario {
     static VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
     
     public static void main(String[] args) {
-        FrameLeer frameLeerArchivo = new FrameLeer();
-        frameLeerArchivo.setVisible(true);
         ventanaPrincipal.setVisible(true); 
     }
     

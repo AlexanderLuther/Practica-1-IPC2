@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistema.bibliotecario;
+package Backend;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,18 +8,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JFileChooser;
-import sistema.bibliotecario.backed.controladorArchivos.CrearArchivo;
-import sistema.bibliotecario.backed.controladorArchivos.CrearArchivoContador;
-import sistema.bibliotecario.backet.objetos.Estudiante;
-import sistema.bibliotecario.backet.objetos.Libro;
-import sistema.bibliotecario.backet.objetos.Prestamo;
 
-/**
- *
- * @author bryan
- */
-public class LeerArchivoEntrada {
+
+public class ManejadorArchivoEntrada {
+
+    //Constantes de la clase
     private final String LIBRO = "LIBRO";
     private final String ESTUDIANTE = "ESTUDIANTE";
     private final String PRESTAMO = "PRESTAMO";
@@ -37,30 +25,46 @@ public class LeerArchivoEntrada {
     private final String CARRERA = "CARRERA:";
     private final String CODIGOLIBRO = "CODIGOLIBRO:";
     private final String FECHA = "FECHA:";
+    
+    //Variables e instancias de la clase
+    private String lineasError = "";
     private Libro libro;
     private Estudiante estudiante;
     private Prestamo prestamo;
-    private CrearArchivoContador archivoContador = new CrearArchivoContador();
-    private CrearArchivo<Libro> archivoLibro = new CrearArchivo<>();
-    private CrearArchivo<Estudiante> archivoEstudiante = new CrearArchivo<>();
-    private CrearArchivo<Prestamo> archivoPrestamo = new CrearArchivo<>();
+    private ManejadorArchivoContador archivoContador = new ManejadorArchivoContador();
+    private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
+    private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
+    private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
     
-    public void leerArchivo(JFileChooser leer, File seleccionado, long tiempo) throws FileNotFoundException, IOException{
+    
+    /*
+    Metodo encargado de la lectura del archivo de entrada, recibe como paremetros el archivo de texto
+    a leer y el tiempo a implementar en el hilo. Inicia un hilo previo a la lectura del archivo. Detecta
+    las palabras "LIBRO", "ESTUDIANTE" y "PRESTAMO" y sentencia la accion a realizar.
+    */
+    public void leerArchivo(File archivoSeleccionado, long tiempo) throws FileNotFoundException, IOException{
         Runnable thread = new Runnable() {
             @Override
             public void run(){
                 crearCarpeta();
                 try{Thread.currentThread().sleep(tiempo);
-                BufferedReader bufferLeer = new BufferedReader(new  FileReader(seleccionado));
-                String linea = bufferLeer.readLine();
-                while (linea != null) {
-                    if (linea.equalsIgnoreCase(LIBRO) || linea.equalsIgnoreCase(ESTUDIANTE) || linea.equalsIgnoreCase(PRESTAMO)) {
-                        leer(bufferLeer, linea, tiempo);
-                    } else {
-                        System.out.println("Formato no reconocido");
+                    BufferedReader bufferLeer = new BufferedReader(new  FileReader(archivoSeleccionado));
+                    String linea = bufferLeer.readLine();
+                    while (linea != null) {
+                        if (linea.equalsIgnoreCase(LIBRO)){
+                            leerLibro(bufferLeer, linea);
+                        }
+                        else if (linea.equalsIgnoreCase(ESTUDIANTE)){
+                            leerEstudiante(bufferLeer, linea);
+                        }
+                        else if (linea.equalsIgnoreCase(PRESTAMO)){
+                            leerPrestamo(bufferLeer, linea);
+                        }
+                        else {
+                            System.out.println("Formato no reconocido.");
+                        }
+                        linea  = bufferLeer.readLine();
                     }
-                    linea  = bufferLeer.readLine();
-                }
                 } catch(Exception e){ }
             }
         };
@@ -68,56 +72,49 @@ public class LeerArchivoEntrada {
         hilo.start();
     }
     
+    
+    /*
+    Metodo encargado de crear un directorio denominado "Archivos". Valida si el directorio ya existe,
+    de lo contrario crea el mismo.
+    */
     public void crearCarpeta() {
         File carpeta = new File("Archivos");
         if (!carpeta.exists()) {
             carpeta.mkdir();
         }
     }
-    
-    public void leer(BufferedReader buffer, String linea, long tiempo) throws IOException, InterruptedException {
-        if (linea.equalsIgnoreCase(LIBRO)) {
-            Thread.sleep(tiempo);
-            leerLibro(buffer, linea);
-        } else if (linea.equalsIgnoreCase(ESTUDIANTE)) {
-            Thread.sleep(tiempo);
-            leerEstudiante(buffer, linea);
-        } else {
-            Thread.sleep(tiempo);
-            leerPrestamo(buffer, linea);
-        }
-    }
-    
+ 
     public void leerLibro(BufferedReader buffer, String linea) throws IOException {
         String codigo = null;
         String autor = null;
         String titulo = null;
         int cantidadDeCopias = 0;
         for (int i = 0; i < 4; i++) {
-                linea  = buffer.readLine();
+            linea  = buffer.readLine();
                 switch (i) {
                     case 0:
-                        linea = linea.replaceAll(TITULO, "");
-                        titulo = linea;
+                            linea = linea.replaceAll(TITULO, "");
+                            titulo = linea;
                         break;
                     case 1:
-                        linea = linea.replaceAll(AUTOR, "");
-                        autor = linea;
+                            linea = linea.replaceAll(AUTOR, "");
+                            autor = linea;
                         break;
                     case 2:
-                        linea = linea.replaceAll(CODIGO, "");
-                        codigo = linea;
+                            linea = linea.replaceAll(CODIGO, "");
+                            codigo = linea;
                         break;
                     case 3:
-                        linea = linea.replaceAll(CANTIDAD, "");
-                        cantidadDeCopias = Integer.parseInt(linea);
+                            linea = linea.replaceAll(CANTIDAD, "");
+                            cantidadDeCopias = Integer.parseInt(linea);
                         break;
                 }
         }
-        libro = new Libro(codigo, autor, titulo, cantidadDeCopias);
-        System.out.println("Libro Titulo: " + libro.getTitulo());
-        archivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib");
+            libro = new Libro(codigo, autor, titulo, cantidadDeCopias, null,"");
+            System.out.println("Libro Titulo: " + libro.getTitulo());
+            archivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib"); 
     }
+   
     
     public void leerEstudiante(BufferedReader buffer, String linea) throws IOException{
         String nombre = null;
@@ -139,7 +136,7 @@ public class LeerArchivoEntrada {
                         break;
                 }
         }
-        estudiante = new Estudiante(nombre, carne, codigoCarrera);
+        estudiante = new Estudiante(nombre, carne, codigoCarrera, null, null, null);
         System.out.println("Estudiante: " + estudiante.getNombre());
         archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, Integer.toString(estudiante.getCarne()), ".est");
     }
@@ -177,14 +174,13 @@ public class LeerArchivoEntrada {
         int accountant = 0;
         File archivoCont = new File("ContadorPrestamo.bin");
         if(archivoCont.exists()){
-            accountant = CrearArchivoContador.leerContador("ContadorPrestamo.bin");
+            accountant = ManejadorArchivoContador.leerContador("ContadorPrestamo.bin");
             System.out.println(accountant);
         } else {
-            CrearArchivoContador.crearNuevoContador(0, "ContadorPrestamo.bin");
+            ManejadorArchivoContador.crearNuevoContador(0, "ContadorPrestamo.bin");
             System.out.println("Creado");
         }
         archivoPrestamo.crearArchivo(prestamo, PRESTAMO, Integer.toString(accountant), ".pre");
         System.out.println("Archivo Creado");
-    }
+    }    
 }
-

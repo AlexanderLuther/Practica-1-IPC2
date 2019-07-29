@@ -1,10 +1,26 @@
 package Frontend;
 import Backend.CambiadorPaneles;
+import Backend.ConvertidorFecha;
+import Backend.Libro;
+import Backend.ManejadorArchivosBinarios;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 
 public class PanelNuevoLibro extends javax.swing.JPanel {
     
+      //Varaibles e instancias de la clase
       private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();
-      private PanelInicio panelInicio = new PanelInicio();
+      private ConvertidorFecha conversor = new ConvertidorFecha();
+      private ManejadorArchivosBinarios<Libro> guardarLibro = new ManejadorArchivosBinarios<>();
+      private Libro libro;
+      private String codigo;
+      private String autor;
+      private String titulo;
+      private int cantidadCopias;
+      private String editorial;
+      private Date fechaPublicacion;
+      
 
     public PanelNuevoLibro() {
         initComponents();
@@ -256,6 +272,11 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         aceptar.setText("ACEPTAR");
         aceptar.setColorHover(new java.awt.Color(0, 204, 0));
         aceptar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -337,6 +358,35 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
 
         add(jPanel1, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
+    /*
+    Metodo encargado de obtener los datos ingresados en las areas de texto. Valida que los campos
+    obligatorios se encuentren llenos y posteriormente crea un objeto de tipo Libro donde se 
+    almacenan los datos obtenidos. Se llama al metodo "crearArchivo" de la clase
+    ManejadorDeArchivos y se crea un archivo binario que contendra el objeto libro instanceado 
+    anteriormente. Por ultimo se limpian las areas de texto.
+    */
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+        if(textoCodigo.getText().equals("   -   ") || textoAutor.getText().isEmpty() || textoTitulo.getText().isEmpty() || textoCodigo.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
+        }
+        else{
+            codigo = textoCodigo.getText();
+            autor = textoAutor.getText();
+            titulo = textoTitulo.getText();
+            cantidadCopias = Integer.parseInt(textoCantidad.getText());
+            editorial = textoEditorial.getText();
+            fechaPublicacion = conversor.convetirFecha(textoFecha.getText());
+            libro = new Libro(codigo, autor, titulo, cantidadCopias, fechaPublicacion, editorial);
+            guardarLibro.crearArchivo(libro, "LIBRO", libro.getCodigo(), ".lib");
+            textoAutor.setText("");
+            textoTitulo.setText("");
+            textoEditorial.setText("");
+            textoCodigo.setText("");
+            textoCantidad.setText("");
+            textoFecha.setText("");
+            JOptionPane.showMessageDialog(this, "Libro Agregado Exitosamente");
+        }
+    }//GEN-LAST:event_aceptarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
