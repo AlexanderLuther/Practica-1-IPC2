@@ -13,18 +13,16 @@ public class ManejadorPrestamo {
     private final String PRESTAMO = "PRESTAMO";
     
     //Variables e instancias de la clase
-    private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
-    private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
-    private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
+    private ManejadorArchivosBinarios<Estudiante> manejadorArchivoEstudiante = new ManejadorArchivosBinarios<>();
+    private ManejadorArchivosBinarios<Libro> manejadorArchivoLibro = new ManejadorArchivosBinarios<>();
+    private ManejadorArchivosBinarios<Prestamo> manejadorArchivoPrestamo = new ManejadorArchivosBinarios<>();
     private ManejadorFechas manejadorFechas = new ManejadorFechas();
     private List<Prestamo> listaNuevoHistorial = new ArrayList<>();
     private List<Prestamo> listaNuevoPrestamosActuales = new ArrayList<>();
-    private List<Prestamo> listaPrestamos = new ArrayList<>();
-    private Estudiante estudiantePrestamo;
-    private Libro libroPrestamo;
+    private Estudiante estudiante;
+    private Libro libro;
     private Prestamo prestamo;
-    private Date fechaLimite;
-    private Date fechaActual = new Date();
+    private Date fechaLimitePrestamo;
     
     /*
     Metodo encargado de realizar el proceso de prestamo.
@@ -46,7 +44,7 @@ public class ManejadorPrestamo {
         } 
         //PASO 2----------------------------------------------------------------------------------------------------
         else {
-            if (comprobarLibrosPrestados(estudiantePrestamo)) {
+            if (comprobarLibrosPrestados(estudiante)) {
                 return "Se ha llegado al limite de prestamos por estudiante";
             }
         //PASO 3----------------------------------------------------------------------------------------------------    
@@ -58,71 +56,25 @@ public class ManejadorPrestamo {
                 else {
                     if(validarCantidadCopias){
                         
-                        if (!comprobarExistencias(libroPrestamo)) {
+                        if (!comprobarExistencias(libro)) {
                         return "Se han agotado las existencias del libro solicitado";     
                         }
                     }
         //PASO 5----------------------------------------------------------------------------------------------------            
                     
-                    fechaLimite = manejadorFechas.sumarDias(fechaPrestamo);
-                    prestamo = new Prestamo(0,libroPrestamo.getCodigo(), estudiantePrestamo.getCarne(), fechaPrestamo, fechaLimite,true, 0);
+                    fechaLimitePrestamo = manejadorFechas.sumarDias(fechaPrestamo,2); 
+                    prestamo = new Prestamo(0,libro.getCodigo(), estudiante.getCarne(), fechaPrestamo, fechaLimitePrestamo,true, 0);
                     guardarPrestamo(prestamo);
-                    agregarListado(estudiantePrestamo, prestamo);
+                    agregarListado(estudiante, prestamo);
                     if(validarCantidadCopias){
-                        disminuirCantidad(libroPrestamo);
+                        disminuirCantidad(libro);
                     }
                     return "Prestamo Realizado Exitosamente";                
                 }                
             }
         }
     }
-    
-    
-    /*
-    Metodo encargado del proceso de devolucion
-        1. Validar que el estudiante y el libro esten registrados en el sistema.
-        2. Buscar el archivo binario que contiene el prestamo.
-        3. Verificar si se debe aplicar mora.
-    */
-    public String procesarDevolucion(String codigoLibro, int carneEstudiante){
-    //PASO 1----------------------------------------------------------------------------------------------------------------------            
-        if (!buscarEstudiante(carneEstudiante)) {
-            return "El estudiante no se encuentra registrado en el sistema";
-        } 
-        else if (!buscarLibro(codigoLibro)) {
-           return "El libro no se encuentra registrado en el sistema";
-        }
-    //PASO 2----------------------------------------------------------------------------------------------------------------------    
-        listaPrestamos = archivoPrestamo.leerListaArchivos(".pre");
-        for (int i = 0; i < listaPrestamos.size(); i++){
-            if(listaPrestamos.get(i).getCodigolibro().equals(codigoLibro) && listaPrestamos.get(i).getCarne() == carneEstudiante
-               && listaPrestamos.get(i).isActivo()){
-                prestamo = listaPrestamos.get(i);
-    //PASO 3----------------------------------------------------------------------------------------------------------------------            
-                System.out.println(fechaActual);
-                System.out.println(prestamo.getFechaLimite());
-                if(fechaActual.compareTo(prestamo.getFechaLimite()) > 0){
-                    System.out.println("Pagar Mora");
-                }
-                    
-                
-                
-                
-                
-                
-                
-                
-                System.out.println("Prestamo encontrado");
-        
-            }
-
-        }
-        
-      
-        return "";
-    }
-    
-    
+     
     /*
     Metodo encargado de leer la longitud del listado de prestamos actuales de un estudiante.Si la
     longitud es igual a tres se devuelve true, caso contrario incluyeno null se devolvera false.
@@ -141,16 +93,19 @@ public class ManejadorPrestamo {
     solicitado
     */
     public boolean buscarLibro(String codigoLibro){
-        libroPrestamo = archivoLibro.leerArchivo(LIBRO, codigoLibro, ".lib");
-        return libroPrestamo != null;
+        libro = manejadorArchivoLibro.leerArchivo(LIBRO, codigoLibro, ".lib");
+        return libro != null;
     }
     
+    /*
+    Metodo encargado de obtener el objeto dentro del archivo binario correspondiente al estudiante 
+    solicitado
+    */
     public boolean buscarEstudiante(int carneEstudiante){
-        estudiantePrestamo = archivoEstudiante.leerArchivo(ESTUDIANTE, String.valueOf(carneEstudiante), ".est");
-        return estudiantePrestamo != null;
+        estudiante = manejadorArchivoEstudiante.leerArchivo(ESTUDIANTE, String.valueOf(carneEstudiante), ".est");
+        return estudiante != null;
     }
-    
-    
+     
     /*
     Metodo encargado de comprobar la cantidad de copias existentes del libro solicitado
     */
@@ -172,7 +127,7 @@ public class ManejadorPrestamo {
             ManejadorArchivoContador.crearNuevoContador(0, "./Archivos/ContadorPrestamo.bin");
         }
         prestamo.setCodigoPrestamo(accountant);
-        archivoPrestamo.crearArchivo(prestamo, PRESTAMO, Integer.toString(accountant), ".pre");
+        manejadorArchivoPrestamo.crearArchivo(prestamo, PRESTAMO, Integer.toString(accountant), ".pre");
     }   
     
     
@@ -200,10 +155,9 @@ public class ManejadorPrestamo {
             listaNuevoHistorial.add(prestamo);
             estudiante.setHistorialPrestamos(listaNuevoHistorial);
         }
-        archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, String.valueOf(estudiante.getCarne()), ".est");
+        manejadorArchivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, String.valueOf(estudiante.getCarne()), ".est");
         listaNuevoHistorial.clear();
         listaNuevoPrestamosActuales.clear();
-        
     }
     
     /*
@@ -212,6 +166,6 @@ public class ManejadorPrestamo {
     */
     public void disminuirCantidad(Libro libro){
         libro.setCantidadCopias(libro.getCantidadCopias()-1);
-        archivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib");
+        manejadorArchivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib");
     }
 }   

@@ -87,7 +87,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         etiquetaNuevo = new javax.swing.JLabel();
         panelMas = new javax.swing.JPanel();
         botonAcecaDe = new rojerusan.RSButtonIconI();
-        botonInformacion1 = new rojerusan.RSButtonIconI();
+        botonHome = new rojerusan.RSButtonIconI();
         botonSalir = new rojerusan.RSButtonIconI();
         etiquetaMas = new javax.swing.JLabel();
         panelPrincipal = new javax.swing.JPanel();
@@ -341,16 +341,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        botonInformacion1.setBackground(new java.awt.Color(204, 204, 204));
-        botonInformacion1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/home.png"))); // NOI18N
-        botonInformacion1.setText("INICIO");
-        botonInformacion1.setBorderPainted(false);
-        botonInformacion1.setColorHover(new java.awt.Color(0, 153, 153));
-        botonInformacion1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        botonInformacion1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botonInformacion1.addActionListener(new java.awt.event.ActionListener() {
+        botonHome.setBackground(new java.awt.Color(204, 204, 204));
+        botonHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/home.png"))); // NOI18N
+        botonHome.setText("INICIO");
+        botonHome.setBorderPainted(false);
+        botonHome.setColorHover(new java.awt.Color(0, 153, 153));
+        botonHome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonHome.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonInformacion1ActionPerformed(evt);
+                botonHomeActionPerformed(evt);
             }
         });
 
@@ -372,7 +372,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelMasLayout.setHorizontalGroup(
             panelMasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(botonAcecaDe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(botonInformacion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botonHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMasLayout.createSequentialGroup()
                 .addComponent(botonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -380,7 +380,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelMasLayout.setVerticalGroup(
             panelMasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMasLayout.createSequentialGroup()
-                .addComponent(botonInformacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonHome, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonAcecaDe, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
@@ -466,14 +466,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCargarArchivoActionPerformed
 
     private void botonNuevoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoLibroActionPerformed
+        panelLibro.limparAreasTexo();
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelLibro);
     }//GEN-LAST:event_botonNuevoLibroActionPerformed
 
     private void botonNuevoEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoEstudianteActionPerformed
+        panelEstudiante.limparAreasTexo();
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelEstudiante);
     }//GEN-LAST:event_botonNuevoEstudianteActionPerformed
 
     private void botonDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDevolucionActionPerformed
+        panelDevolucion.limparAreasTexo();
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelDevolucion);
     }//GEN-LAST:event_botonDevolucionActionPerformed
 
@@ -481,11 +484,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelInformacion);
     }//GEN-LAST:event_botonAcecaDeActionPerformed
 
-    private void botonInformacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInformacion1ActionPerformed
+    private void botonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonHomeActionPerformed
        cambiadorPaneles.cambiarPanel(panelPrincipal, panelInicio);
-    }//GEN-LAST:event_botonInformacion1ActionPerformed
+    }//GEN-LAST:event_botonHomeActionPerformed
 
     private void botonNuevoPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoPrestamoActionPerformed
+        panelPrestamo.limparAreasTexo();
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelPrestamo);
     }//GEN-LAST:event_botonNuevoPrestamoActionPerformed
 
@@ -494,7 +498,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelListado.limpiarListaLibros();
         panelListado.llenarListaEstudiantes();
         panelListado.llenarListaLibros();
-        
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
     }//GEN-LAST:event_botonNuevoListadoActionPerformed
 
@@ -538,7 +541,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private rojerusan.RSButtonIconI botonAcecaDe;
     private rojerusan.RSButtonIconI botonCargarArchivo;
     private rojerusan.RSButtonIconI botonDevolucion;
-    private rojerusan.RSButtonIconI botonInformacion1;
+    private rojerusan.RSButtonIconI botonHome;
     private rojerusan.RSButtonIconI botonNuevoEstudiante;
     private rojerusan.RSButtonIconI botonNuevoLibro;
     private rojerusan.RSButtonIconI botonNuevoListado;

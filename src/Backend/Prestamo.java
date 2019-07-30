@@ -72,7 +72,11 @@ public class Prestamo implements Serializable{
         this.activo = activo;
     }
 
-    
-    
-    
+    public int getCantidadPagada() {
+        return cantidadPagada;
+    }
+
+    public void setCantidadPagada(int cantidadPagada) {
+        this.cantidadPagada = cantidadPagada;
+    }    
 }

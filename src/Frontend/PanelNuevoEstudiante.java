@@ -18,6 +18,16 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
     public PanelNuevoEstudiante() {
         initComponents();
     }
+    
+    /*
+    Metodo encargado de limpiar todas las areas de texto
+    */
+    public void limparAreasTexo(){
+        textoCarne.setText(null);
+        textoNombre.setText(null);
+        selectorFecha.setDatoFecha(null);
+        selectorCarrera.setSelectedIndex(0);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -325,11 +335,8 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
             codigoCarrera = selectorCarrera.getSelectedIndex() + 1;
             estudiante = new Estudiante(nombre, carne, codigoCarrera, fechaNacimiento, null, null);
             guardarEstudiante.crearArchivo(estudiante, "ESTUDIANTE", String.valueOf(estudiante.getCarne()), ".est");
-            textoCarne.setText(null);
-            selectorFecha.setDatoFecha(null);
-            textoNombre.setText(null);
-            selectorCarrera.setSelectedIndex(0);
             JOptionPane.showMessageDialog(this, "Estudiante Agregado Exitosamente");
+            this.limparAreasTexo();
         }
     }//GEN-LAST:event_aceptarActionPerformed
 
