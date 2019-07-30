@@ -20,7 +20,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private PanelInicio panelInicio = new PanelInicio();
     private PanelDevolucion panelDevolucion = new PanelDevolucion();
     private PanelListado panelListado = new PanelListado();
-    private PanelReportes panelReportes = new PanelReportes();
+    private PanelReportes panelReportes = new PanelReportes(this);
     
     //Manejadores auxiliares
     private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();

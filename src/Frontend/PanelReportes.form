@@ -51,6 +51,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Prestamos por un estudiante"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rSButtonIconI1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI2">
       <Properties>

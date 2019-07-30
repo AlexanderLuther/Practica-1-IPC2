@@ -5,16 +5,21 @@
  */
 package Frontend;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author helmuthluther
  */
 public class PanelReportes extends javax.swing.JPanel {
-
+    private ReportePrestamoHecho reportePrestamoHecho;
+    
     /**
      * Creates new form PanelReportes
+     * @param framePrincipal
      */
-    public PanelReportes() {
+    public PanelReportes(JFrame framePrincipal) {
+        this.reportePrestamoHecho = new ReportePrestamoHecho(framePrincipal, true);
         initComponents();
     }
 
@@ -34,6 +39,11 @@ public class PanelReportes extends javax.swing.JPanel {
         setBackground(new java.awt.Color(102, 102, 0));
 
         rSButtonIconI1.setText("Prestamos por un estudiante");
+        rSButtonIconI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconI1ActionPerformed(evt);
+            }
+        });
 
         rSButtonIconI2.setText("Libros Prestados a un estudiante");
 
@@ -63,6 +73,11 @@ public class PanelReportes extends javax.swing.JPanel {
                 .addContainerGap(259, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rSButtonIconI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI1ActionPerformed
+        // TODO add your handling code here:
+        reportePrestamoHecho.setVisible(true);
+    }//GEN-LAST:event_rSButtonIconI1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
