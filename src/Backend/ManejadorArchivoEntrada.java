@@ -27,7 +27,6 @@ public class ManejadorArchivoEntrada {
     private final String FECHA = "FECHA:";
     
     //Variables e instancias de la clase
-    private String lineasError = "";
     private Libro libro;
     private Estudiante estudiante;
     private Prestamo prestamo;
@@ -173,7 +172,7 @@ public class ManejadorArchivoEntrada {
                     break;
             }
         }
-        String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo);
+        String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo, false);
         System.out.println(mensaje);
     }
     

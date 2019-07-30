@@ -494,6 +494,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelListado.limpiarListaLibros();
         panelListado.llenarListaEstudiantes();
         panelListado.llenarListaLibros();
+        
         cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
     }//GEN-LAST:event_botonNuevoListadoActionPerformed
 

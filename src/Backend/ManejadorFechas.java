@@ -30,7 +30,7 @@ public class ManejadorFechas {
     public Date sumarDias(Date fecha){
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(fecha); 
-      calendar.add(Calendar.DAY_OF_YEAR, 3);
+      calendar.add(Calendar.DAY_OF_YEAR, 2);
       return calendar.getTime(); 
     }
 }

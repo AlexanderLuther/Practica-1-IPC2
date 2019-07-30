@@ -8,17 +8,20 @@ public class Prestamo implements Serializable{
 
     private int codigoPrestamo;
     private String codigolibro;
-    private int carnet;
+    private int carne;
     private Date fechaPrestamo;
     private Date fechaLimite;
     private boolean activo;
+    private int cantidadPagada;
 
-    public Prestamo(String codigolibro, int carnet, Date fechaPrestamo, Date fechaLimite, boolean activo) {
+    public Prestamo(int codigoPrestamo, String codigolibro, int carnet, Date fechaPrestamo, Date fechaLimite, boolean activo, int cantidadPagada) {
+        this.codigoPrestamo =codigoPrestamo;
         this.codigolibro = codigolibro;
-        this.carnet = carnet;
+        this.carne = carnet;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaLimite = fechaLimite;
         this.activo = activo;
+        this.cantidadPagada = cantidadPagada;
     }
 
     public int getCodigoPrestamo() {
@@ -29,8 +32,8 @@ public class Prestamo implements Serializable{
         return codigolibro;
     }
 
-    public int getCarnet() {
-        return carnet;
+    public int getCarne() {
+        return carne;
     }
 
     public Date getFechaPrestamo() {
@@ -53,8 +56,8 @@ public class Prestamo implements Serializable{
         this.codigolibro = codigolibro;
     }
 
-    public void setCarnet(int carnet) {
-        this.carnet = carnet;
+    public void setCarne(int carnet) {
+        this.carne = carnet;
     }
 
     public void setFechaPrestamo(Date fechaPrestamo) {

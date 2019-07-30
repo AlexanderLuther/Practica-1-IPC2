@@ -19,10 +19,12 @@ public class ManejadorPrestamo {
     private ManejadorFechas manejadorFechas = new ManejadorFechas();
     private List<Prestamo> listaNuevoHistorial = new ArrayList<>();
     private List<Prestamo> listaNuevoPrestamosActuales = new ArrayList<>();
+    private List<Prestamo> listaPrestamos = new ArrayList<>();
     private Estudiante estudiantePrestamo;
     private Libro libroPrestamo;
     private Prestamo prestamo;
     private Date fechaLimite;
+    private Date fechaActual = new Date();
     
     /*
     Metodo encargado de realizar el proceso de prestamo.
@@ -37,10 +39,9 @@ public class ManejadorPrestamo {
            agrega el registro de prestamos hechos a la instancia de estudiante correspondiente. Por ultimo
            se actualiza la cantidad de copias actuales del libro prestado.
     */
-    public String procesarPrestamo(int carnetEstudiante, String codigoLibro, Date fechaPrestamo) {
+    public String procesarPrestamo(int carneEstudiante, String codigoLibro, Date fechaPrestamo, boolean validarCantidadCopias) {
         //PASO 1----------------------------------------------------------------------------------------------------
-        estudiantePrestamo = archivoEstudiante.leerArchivo(ESTUDIANTE, Integer.toString(carnetEstudiante), ".est");
-        if (estudiantePrestamo == null) {
+        if (!buscarEstudiante(carneEstudiante)) {
             return "El estudiante no se encuentra registrado en el sistema";
         } 
         //PASO 2----------------------------------------------------------------------------------------------------
@@ -55,22 +56,72 @@ public class ManejadorPrestamo {
                 }
         //PASO 4----------------------------------------------------------------------------------------------------        
                 else {
-                    if (!comprobarExistencias(libroPrestamo)) {
-                        return "Se han agotado las existencias del libro solicitado";    
+                    if(validarCantidadCopias){
+                        
+                        if (!comprobarExistencias(libroPrestamo)) {
+                        return "Se han agotado las existencias del libro solicitado";     
+                        }
                     }
         //PASO 5----------------------------------------------------------------------------------------------------            
-                    else {
-                        fechaLimite = manejadorFechas.sumarDias(fechaPrestamo);
-                        prestamo = new Prestamo(libroPrestamo.getCodigo(), estudiantePrestamo.getCarne(), fechaPrestamo, fechaPrestamo,true);
-                        guardarPrestamo(prestamo);
-                        agregarListado(estudiantePrestamo, prestamo);
+                    
+                    fechaLimite = manejadorFechas.sumarDias(fechaPrestamo);
+                    prestamo = new Prestamo(0,libroPrestamo.getCodigo(), estudiantePrestamo.getCarne(), fechaPrestamo, fechaLimite,true, 0);
+                    guardarPrestamo(prestamo);
+                    agregarListado(estudiantePrestamo, prestamo);
+                    if(validarCantidadCopias){
                         disminuirCantidad(libroPrestamo);
-                        return "Prestamo Realizado Exitosamente";
                     }
-                }
+                    return "Prestamo Realizado Exitosamente";                
+                }                
             }
         }
     }
+    
+    
+    /*
+    Metodo encargado del proceso de devolucion
+        1. Validar que el estudiante y el libro esten registrados en el sistema.
+        2. Buscar el archivo binario que contiene el prestamo.
+        3. Verificar si se debe aplicar mora.
+    */
+    public String procesarDevolucion(String codigoLibro, int carneEstudiante){
+    //PASO 1----------------------------------------------------------------------------------------------------------------------            
+        if (!buscarEstudiante(carneEstudiante)) {
+            return "El estudiante no se encuentra registrado en el sistema";
+        } 
+        else if (!buscarLibro(codigoLibro)) {
+           return "El libro no se encuentra registrado en el sistema";
+        }
+    //PASO 2----------------------------------------------------------------------------------------------------------------------    
+        listaPrestamos = archivoPrestamo.leerListaArchivos(".pre");
+        for (int i = 0; i < listaPrestamos.size(); i++){
+            if(listaPrestamos.get(i).getCodigolibro().equals(codigoLibro) && listaPrestamos.get(i).getCarne() == carneEstudiante
+               && listaPrestamos.get(i).isActivo()){
+                prestamo = listaPrestamos.get(i);
+    //PASO 3----------------------------------------------------------------------------------------------------------------------            
+                System.out.println(fechaActual);
+                System.out.println(prestamo.getFechaLimite());
+                if(fechaActual.compareTo(prestamo.getFechaLimite()) > 0){
+                    System.out.println("Pagar Mora");
+                }
+                    
+                
+                
+                
+                
+                
+                
+                
+                System.out.println("Prestamo encontrado");
+        
+            }
+
+        }
+        
+      
+        return "";
+    }
+    
     
     /*
     Metodo encargado de leer la longitud del listado de prestamos actuales de un estudiante.Si la
@@ -94,6 +145,12 @@ public class ManejadorPrestamo {
         return libroPrestamo != null;
     }
     
+    public boolean buscarEstudiante(int carneEstudiante){
+        estudiantePrestamo = archivoEstudiante.leerArchivo(ESTUDIANTE, String.valueOf(carneEstudiante), ".est");
+        return estudiantePrestamo != null;
+    }
+    
+    
     /*
     Metodo encargado de comprobar la cantidad de copias existentes del libro solicitado
     */
@@ -114,6 +171,7 @@ public class ManejadorPrestamo {
         } else {
             ManejadorArchivoContador.crearNuevoContador(0, "./Archivos/ContadorPrestamo.bin");
         }
+        prestamo.setCodigoPrestamo(accountant);
         archivoPrestamo.crearArchivo(prestamo, PRESTAMO, Integer.toString(accountant), ".pre");
     }   
     
@@ -143,6 +201,8 @@ public class ManejadorPrestamo {
             estudiante.setHistorialPrestamos(listaNuevoHistorial);
         }
         archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, String.valueOf(estudiante.getCarne()), ".est");
+        listaNuevoHistorial.clear();
+        listaNuevoPrestamosActuales.clear();
         
     }
     

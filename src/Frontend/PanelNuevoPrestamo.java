@@ -309,7 +309,7 @@ public class PanelNuevoPrestamo extends javax.swing.JPanel {
             carneEstudiante = Integer.parseInt(textoCarne.getText());
             codigoLibro = textoCodigo.getText();
             fechaPrestamo = selectorFecha.getDatoFecha();
-            mensaje = manejadorPrestamo.procesarPrestamo(carneEstudiante, codigoLibro, fechaPrestamo);
+            mensaje = manejadorPrestamo.procesarPrestamo(carneEstudiante, codigoLibro, fechaPrestamo, true);
             JOptionPane.showMessageDialog(textoCarne, mensaje);
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
