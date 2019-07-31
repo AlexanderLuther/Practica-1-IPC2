@@ -5,13 +5,16 @@
  HEAD
         
         
+        
         <group>
-            <file>file:/home/helmuthluther/Documentos/Sistema%20Bibliotecario%20(copia)/src/Frontend/PanelNuevoEstudiante.java</file>
             <file>file:/home/helmuthluther/Documentos/Sistema%20Bibliotecario%20(copia)/src/Frontend/PanelNuevoLibro.java</file>
+            <file>file:/home/helmuthluther/Documentos/Sistema%20Bibliotecario%20(copia)/src/Frontend/PanelNuevoEstudiante.java</file>
         </group>
         <group>
-            <file>file:/home/helmuthluther/Documentos/Sistema%20Bibliotecario%20(copia)/src/Frontend/PanelNuevoLibro.java</file>
-            <file>file:/home/helmuthluther/Documentos/Sistema%20Bibliotecario%20(copia)/src/Frontend/PanelNuevoEstudiante.java</file>
+            <file>file:/home/bryan/Documentos/Practica-1-IPC2/src/Frontend/ReportePrestamosActuales.java</file>
+            <file>file:/home/bryan/Documentos/Practica-1-IPC2/src/Frontend/ReportePrestamoHecho.java</file>
+            <file>file:/home/bryan/Documentos/Practica-1-IPC2/src/Frontend/PanelReportes.java</file>
+            <file>file:/home/bryan/Documentos/Practica-1-IPC2/src/Frontend/PanelNuevoPrestamo.java</file>
         </group>
     </open-files>
 </project-private>

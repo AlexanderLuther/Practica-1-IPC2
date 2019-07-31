@@ -20,7 +20,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private PanelInicio panelInicio = new PanelInicio();
     private PanelDevolucion panelDevolucion = new PanelDevolucion();
     private PanelListado panelListado = new PanelListado();
-    private PanelReportes panelReportes = new PanelReportes(this);
+    private PanelReporte panelReportes = new PanelReporte(this);
     
     //Manejadores auxiliares
     private CambiadorPaneles cambiadorPaneles = new CambiadorPaneles();
@@ -527,6 +527,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

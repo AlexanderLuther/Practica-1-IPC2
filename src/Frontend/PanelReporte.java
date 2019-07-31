@@ -11,13 +11,16 @@ import javax.swing.JFrame;
  *
  * @author helmuthluther
  */
-public class PanelReportes extends javax.swing.JPanel {
+public class PanelReporte extends javax.swing.JPanel {
 
-    
+    private ReportePrestamoActuales reportePrestamosActuales;
     private ReportePrestamoHecho reportePrestamoHecho;
+    private ReportePrestamosHechosCarrera reportePrestamosHechosCarrera;
     
-     public PanelReportes(JFrame framePrincipal) {
+     public PanelReporte(JFrame framePrincipal) {
         this.reportePrestamoHecho = new ReportePrestamoHecho(framePrincipal, true);
+        this.reportePrestamosActuales = new ReportePrestamoActuales(framePrincipal, true);
+        this.reportePrestamosHechosCarrera = new ReportePrestamosHechosCarrera(framePrincipal, true);
         initComponents();
     }
     
@@ -44,20 +47,30 @@ public class PanelReportes extends javax.swing.JPanel {
         });
 
         rSButtonIconI2.setText("Libros Prestados a un estudiante");
+        rSButtonIconI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconI2ActionPerformed(evt);
+            }
+        });
 
         rSButtonIconI3.setText("Prestamos hechos a cada carrera");
+        rSButtonIconI3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconI3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(424, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rSButtonIconI3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rSButtonIconI2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rSButtonIconI1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(203, 203, 203))
+                .addContainerGap(421, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(rSButtonIconI3, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(rSButtonIconI1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(rSButtonIconI2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(206, 206, 206))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -75,6 +88,16 @@ public class PanelReportes extends javax.swing.JPanel {
     private void rSButtonIconI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI1ActionPerformed
         reportePrestamoHecho.setVisible(true);
     }//GEN-LAST:event_rSButtonIconI1ActionPerformed
+
+    private void rSButtonIconI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI2ActionPerformed
+        // TODO add your handling code here:
+        reportePrestamosActuales.setVisible(true);
+    }//GEN-LAST:event_rSButtonIconI2ActionPerformed
+
+    private void rSButtonIconI3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI3ActionPerformed
+        // TODO add your handling code here:
+        reportePrestamosHechosCarrera.setVisible(true);
+    }//GEN-LAST:event_rSButtonIconI3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
