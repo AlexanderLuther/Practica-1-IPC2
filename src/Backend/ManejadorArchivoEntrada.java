@@ -36,6 +36,7 @@ public class ManejadorArchivoEntrada {
     private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
     private Date fechaLimite;
+    private String errores = "";
     
     
     /*
@@ -62,15 +63,17 @@ public class ManejadorArchivoEntrada {
                             leerPrestamo(bufferLeer, linea);
                         }
                         else {
-                            System.out.println("Formato no reconocido.");
+                            errores = errores + "Formato no reconocido: " + linea + "\n";
                         }
                         linea  = bufferLeer.readLine();
                     }
                 } catch(Exception e){ }
             }
         };
+        //System.out.println(errores);
         Thread hilo = new Thread(thread);
         hilo.start();
+        
     }
     
     /*
@@ -84,9 +87,6 @@ public class ManejadorArchivoEntrada {
         }
     }
  
-    
-    
-    
     public void leerLibro(BufferedReader buffer, String linea) throws IOException {
         String codigo = null;
         String autor = "Desconocido";
@@ -114,7 +114,6 @@ public class ManejadorArchivoEntrada {
                 }
         }
             libro = new Libro(codigo, autor, titulo, cantidadDeCopias, null,"");
-            System.out.println("Libro Titulo: " + libro.getTitulo());
             archivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib"); 
     }
    
@@ -140,14 +139,9 @@ public class ManejadorArchivoEntrada {
                 }
         }
         estudiante = new Estudiante(nombre, carne, codigoCarrera, null, null, null);
-        System.out.println("Estudiante: " + estudiante.getNombre());
         archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, Integer.toString(estudiante.getCarne()), ".est");
     }
-    
-    
-    
-    
-    
+       
     public void leerPrestamo(BufferedReader buffer, String linea) throws IOException {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String codigo = null;
@@ -167,13 +161,11 @@ public class ManejadorArchivoEntrada {
                        fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
                     } 
                     catch (ParseException ex) {
-                        System.out.println("Error de Formato fecha");
+                        errores = errores + "Error en formato de fecha: " + linea + "\n";
                     }
                     break;
             }
         }
         String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo, false);
-        System.out.println(mensaje);
     }
-    
 }

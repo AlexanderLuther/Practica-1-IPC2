@@ -17,6 +17,15 @@ public class PanelNuevoPrestamo extends javax.swing.JPanel {
         initComponents();
     }
     
+    /*
+    Metodo encargado de limpiar todas las areas de texto
+    */
+    public void limparAreasTexo(){
+        textoCodigo.setText(null);
+        textoCarne.setText(null);
+        selectorFecha.setDatoFecha(null);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -302,7 +311,7 @@ public class PanelNuevoPrestamo extends javax.swing.JPanel {
     basado en la realizacion del proceso. Por ultimo se imprime en pantalla el mensaje recibido.
     */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if(textoCarne.getText().isEmpty() || textoCodigo.getText().isEmpty() || selectorFecha.getDatoFecha() == null){
+        if(textoCarne.getText().isEmpty() || textoCodigo.getText().equals("   -   ") || selectorFecha.getDatoFecha() == null){
             JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
         }
         else{
@@ -310,7 +319,10 @@ public class PanelNuevoPrestamo extends javax.swing.JPanel {
             codigoLibro = textoCodigo.getText();
             fechaPrestamo = selectorFecha.getDatoFecha();
             mensaje = manejadorPrestamo.procesarPrestamo(carneEstudiante, codigoLibro, fechaPrestamo, true);
-            JOptionPane.showMessageDialog(textoCarne, mensaje);
+            JOptionPane.showMessageDialog(this, mensaje);
+            if(mensaje.equals("Prestamo Realizado Exitosamente")){
+                this.limparAreasTexo();
+            }
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 

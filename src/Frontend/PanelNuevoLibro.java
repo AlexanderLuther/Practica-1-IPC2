@@ -24,6 +24,17 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
         initComponents();
     }
 
+    /*
+    Metodo encargado de limpiar todas las areas de texto
+    */
+    public void limparAreasTexo(){
+        textoAutor.setText(null);
+        textoCantidad.setText(null);
+        textoCodigo.setText(null);
+        textoEditorial.setText(null);
+        textoTitulo.setText(null);
+        selectorFecha.setDatoFecha(null);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -377,13 +388,8 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
             fechaPublicacion = selectorFecha.getDatoFecha();
             libro = new Libro(codigo, autor, titulo, cantidadCopias, fechaPublicacion, editorial);
             guardarLibro.crearArchivo(libro, "LIBRO", libro.getCodigo(), ".lib");
-            textoAutor.setText("");
-            textoTitulo.setText("");
-            textoEditorial.setText("");
-            textoCodigo.setText("");
-            textoCantidad.setText("");
-            selectorFecha.setDatoFecha(null);
             JOptionPane.showMessageDialog(this, "Libro Agregado Exitosamente");
+            this.limparAreasTexo();
         }
     }//GEN-LAST:event_aceptarActionPerformed
 

@@ -21,7 +21,7 @@ public class PanelAcercaDe extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("DejaVu Serif", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/asterisco.png"))); // NOI18N
-        jLabel1.setText("Bryan René Gómez Gómez\t");
+        jLabel1.setText("Bryan Rene Gomez Gomez\t");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;

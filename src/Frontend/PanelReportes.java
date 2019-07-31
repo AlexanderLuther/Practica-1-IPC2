@@ -12,17 +12,15 @@ import javax.swing.JFrame;
  * @author helmuthluther
  */
 public class PanelReportes extends javax.swing.JPanel {
+
+    
     private ReportePrestamoHecho reportePrestamoHecho;
     
-    /**
-     * Creates new form PanelReportes
-     * @param framePrincipal
-     */
-    public PanelReportes(JFrame framePrincipal) {
+     public PanelReportes(JFrame framePrincipal) {
         this.reportePrestamoHecho = new ReportePrestamoHecho(framePrincipal, true);
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,7 +73,6 @@ public class PanelReportes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rSButtonIconI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI1ActionPerformed
-        // TODO add your handling code here:
         reportePrestamoHecho.setVisible(true);
     }//GEN-LAST:event_rSButtonIconI1ActionPerformed
 

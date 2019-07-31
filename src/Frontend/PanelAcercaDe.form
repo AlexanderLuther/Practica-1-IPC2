@@ -32,7 +32,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Imagenes/asterisco.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Bryan Ren&#xe9; G&#xf3;mez G&#xf3;mez&#x9;"/>
+        <Property name="text" type="java.lang.String" value="Bryan Rene Gomez Gomez&#x9;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
