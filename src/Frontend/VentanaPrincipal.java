@@ -496,11 +496,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void botonNuevoListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoListadoActionPerformed
       panelListado.llenarTablaEstudiantesCompletos();
       panelListado.llenarTablaLibrosCompletos();
-       // panelListado.limpiarListaEstudiantes();
-        //panelListado.limpiarListaLibros();
-       // panelListado.llenarListaEstudiantes();
-       // panelListado.llenarListaLibros();
-        cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
+      cambiadorPaneles.cambiarPanel(panelPrincipal, panelListado);
     }//GEN-LAST:event_botonNuevoListadoActionPerformed
 
     private void botonReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReporteActionPerformed

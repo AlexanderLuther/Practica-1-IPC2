@@ -7,9 +7,14 @@
         
         
         
-        <group/>
+        
         <group>
             <file>file:/home/helmuthluther/Documentos/Programas%20Desarrollados/NetBeansProjects/Java/Sistema%20Bibliotecario/src/Frontend/PanelListado.java</file>
+        </group>
+        <group>
+            <file>file:/home/helmuthluther/Documentos/Programas%20Desarrollados/NetBeansProjects/Java/Sistema%20Bibliotecario/src/Backend/ManejadorBusqueda.java</file>
+            <file>file:/home/helmuthluther/Documentos/Programas%20Desarrollados/NetBeansProjects/Java/Sistema%20Bibliotecario/src/Frontend/Reporte1.java</file>
+            <file>file:/home/helmuthluther/Documentos/Programas%20Desarrollados/NetBeansProjects/Java/Sistema%20Bibliotecario/src/Frontend/PanelReportes.java</file>
         </group>
     </open-files>
 </project-private>

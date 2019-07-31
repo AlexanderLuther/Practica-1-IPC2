@@ -1,12 +1,16 @@
 package Backend;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManejadorBusqueda {
 
     private List<Libro> librosEncontrados = new ArrayList<>();
     private List<Estudiante> estudiantesEncontrados = new ArrayList<>();
+    private List<Prestamo> prestamosEncontrados = new ArrayList<>();
+    private ManejadorFechas manejadorFecha = new ManejadorFechas();
+    private Date fechaActual;
     
     /*
     Metodo encargado de realizar una busqueda dentro de una lista. Recibe como parametros 
@@ -39,5 +43,17 @@ public class ManejadorBusqueda {
         }
         return estudiantesEncontrados; 
     }
+    
+    
+    public List<Prestamo> busquedaPrestamo(List<Prestamo> listadoPrestamos){
+        fechaActual = new Date();
+        prestamosEncontrados.clear();
+        for(int i = 0; i < listadoPrestamos.size(); i++){
+            if(String.valueOf(listadoPrestamos.get(i).getFechaLimite()).contains(manejadorFecha.darFormatoFecha(fechaActual))){
+                prestamosEncontrados.add(listadoPrestamos.get(i));
+            }
+        }
+        return prestamosEncontrados; 
+    }    
     
 }
