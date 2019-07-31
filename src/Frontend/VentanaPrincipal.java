@@ -31,6 +31,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     //Variables usadas por la clase
     private File direccion;
     private int eleccionFileChooser;
+    private String erroresLecturaArchivo = "";
     
     public VentanaPrincipal() {    
         initComponents();
@@ -52,7 +53,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if(eleccionFileChooser == selectorArchivos.APPROVE_OPTION){
             direccion = selectorArchivos.getSelectedFile();
             try {
-                archivoEntrada.leerArchivo(direccion, 0l);//EN 0l el tiempo de espera del hilo
+                erroresLecturaArchivo = archivoEntrada.leerArchivo(direccion, 0l);//EN 0l el tiempo de espera del hilo
             } catch (IOException ex) {
                 Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -461,7 +462,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     private void botonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCargarArchivoActionPerformed
-        if(cargarArchivo()) cambiadorPaneles.cambiarPanel(panelPrincipal, panelArchivo);
+        if(cargarArchivo()){
+            cambiadorPaneles.cambiarPanel(panelPrincipal, panelInicio);
+            if(erroresLecturaArchivo.equals("")){
+                JOptionPane.showMessageDialog(this, "Carga de Archivo exitosa", "Archivo De Entrada", 2);
+            }
+            else{
+                panelArchivo.llenarErrores(erroresLecturaArchivo);
+                cambiadorPaneles.cambiarPanel(panelPrincipal, panelArchivo);
+            }
+        } 
         else JOptionPane.showMessageDialog(rootPane, "No se selecciono ningun archivo");
     }//GEN-LAST:event_botonCargarArchivoActionPerformed
 

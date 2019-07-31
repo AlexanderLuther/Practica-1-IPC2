@@ -61,6 +61,17 @@ public class Reporte5 extends javax.swing.JDialog {
         this.observableList.addAll(list);
     }
     
+    /*
+    Metodo encargado de limpiar los campos de texto
+    */
+    public void limpiar(){
+        observableList.clear();
+        txtCarnet.setText(null);
+        txtEstudiante.setText(null);
+        lblValidacionCampo.setVisible(false);
+        lblValidacionRegistro.setVisible(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,6 +94,8 @@ public class Reporte5 extends javax.swing.JDialog {
         lblValidacionRegistro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jTable1.setForeground(new java.awt.Color(0, 153, 153));
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${observableList}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
@@ -156,7 +169,7 @@ public class Reporte5 extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblPrestamosActuales)
-                                .addGap(0, 35, Short.MAX_VALUE))
+                                .addGap(0, 242, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

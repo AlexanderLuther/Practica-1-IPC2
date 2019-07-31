@@ -325,18 +325,23 @@ public class PanelNuevoEstudiante extends javax.swing.JPanel {
     anteriormente. Por ultimo se limpian las areas de texto.
     */
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-         if(textoCarne.getText().isEmpty() || textoNombre.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
+        try{
+            if(textoCarne.getText().isEmpty() || textoNombre.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
+            }
+            else{
+                nombre = textoNombre.getText();
+                carne = Integer.parseInt(textoCarne.getText());
+                fechaNacimiento = selectorFecha.getDatoFecha();
+                codigoCarrera = selectorCarrera.getSelectedIndex() + 1;
+                estudiante = new Estudiante(nombre, carne, codigoCarrera, fechaNacimiento, null, null);
+                guardarEstudiante.crearArchivo(estudiante, "ESTUDIANTE", String.valueOf(estudiante.getCarne()), ".est");
+                JOptionPane.showMessageDialog(this, "Estudiante Agregado Exitosamente");
+                this.limparAreasTexo();
+            }        
         }
-        else{
-            nombre = textoNombre.getText();
-            carne = Integer.parseInt(textoCarne.getText());
-            fechaNacimiento = selectorFecha.getDatoFecha();
-            codigoCarrera = selectorCarrera.getSelectedIndex() + 1;
-            estudiante = new Estudiante(nombre, carne, codigoCarrera, fechaNacimiento, null, null);
-            guardarEstudiante.crearArchivo(estudiante, "ESTUDIANTE", String.valueOf(estudiante.getCarne()), ".est");
-            JOptionPane.showMessageDialog(this, "Estudiante Agregado Exitosamente");
-            this.limparAreasTexo();
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Numero de carne no valido");
         }
     }//GEN-LAST:event_aceptarActionPerformed
 

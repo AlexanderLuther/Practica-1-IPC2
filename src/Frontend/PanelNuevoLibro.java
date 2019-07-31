@@ -376,7 +376,7 @@ public class PanelNuevoLibro extends javax.swing.JPanel {
     anteriormente. Por ultimo se limpian las areas de texto.
     */
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        if(textoCodigo.getText().equals("   -   ") || textoAutor.getText().isEmpty() || textoTitulo.getText().isEmpty() || textoCodigo.getText().isEmpty()){
+        if(textoCodigo.getText().equals("   -   ") || textoAutor.getText().isEmpty() || textoTitulo.getText().isEmpty() || textoCantidad.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
         }
         else{

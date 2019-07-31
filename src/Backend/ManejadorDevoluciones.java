@@ -79,7 +79,7 @@ public class ManejadorDevoluciones {
         cantidadTotal = 0;
     //PASO 1----------------------------------------------------------------------------------------------------------------------           
         fechaMora = manejadorFechas.sumarDias(prestamo.getFechaLimite(),1);
-        if(manejadorFechas.compararFechas(fechaMora)){
+        if(manejadorFechas.compararFechasDespuesActual(fechaMora)){
             cantidadDiasMora = manejadorFechas.obtenerDiferenciaFechas(prestamo.getFechaLimite());
             calcularCuota(3);
             calcularMora(cantidadDiasMora);
@@ -177,7 +177,8 @@ public class ManejadorDevoluciones {
     */
     public void cambiarCuotaPrestamo(int codigoPrestamo){
         prestamo = manejadorArchivoPrestamo.leerArchivo(PRESTAMO, String.valueOf(codigoPrestamo), ".pre");
-        prestamo.setCantidadPagada(cantidadTotal);
+        prestamo.setCantidadCuota(cantidadCuotaTotal);
+        prestamo.setCantidadMora(cantidadMoraTotal);
         manejadorArchivoPrestamo.crearArchivo(prestamo, PRESTAMO, String.valueOf(prestamo.getCodigoPrestamo()), ".pre");
     }
     

@@ -40,7 +40,37 @@ public class ManejadorFechas {
     Metodo encargado de comparar si la fecha que recibe como parametro se encuentra despues de la 
     fecha actual.
     */
-    public boolean compararFechas(Date fechaLimite){
+    public boolean compararFechasDespuesActual(Date fechaLimite){
         return fechaActual.after(fechaLimite);
     }    
+    
+    /*
+    Metodo encargado de comparar dos fechas  que recibe como parametro.
+    */
+    public boolean compararFechasDespues(Date fechaPrestamo , Date fechaInicial){
+        return fechaPrestamo.after(fechaInicial);
+    }    
+    
+    /*
+    Metodo encargado de comparar dos fechas que recibe como parametro.
+    */
+    public boolean compararFechasAntes(Date fechaPrestamo , Date fechaFinal){
+        return fechaPrestamo.before(fechaFinal);
+    }  
+    
+    /*
+    Metodo encargado de comparar una fecha con la fecha actual. Si son iguales devuelve true,
+    de lo contrario devulve false.
+    */
+    public boolean compararFechasIdenticasActual(Date fecha){
+        return darFormatoFecha(fecha). equals(darFormatoFecha(fechaActual));
+    }
+    
+    /*
+    Metodo encargado de comparar dos fechas. Si son iguales devuelve true, de lo 
+    contrario devulve false.
+    */
+    public boolean compararFechasIdenticas(Date fechaPrestamo, Date fecha){
+        return darFormatoFecha(fechaPrestamo). equals(darFormatoFecha(fecha));
+    }
 }

@@ -503,27 +503,32 @@ public class PanelDevolucion extends javax.swing.JPanel {
     nuevo JDialog.
     */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if(textoCarne.getText().isEmpty() || textoCodigo.getText().equals("   -   ")){
-            JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
-        }
-        else{
-            carne = Integer.parseInt(textoCarne.getText());
-            codigoLibro = textoCodigo.getText();
-            mensaje = manejadorDevoluciones.validarExistenciaLibroEstudiante(codigoLibro, carne); 
-            if(!mensaje.equals("")){
-                JOptionPane.showMessageDialog(this, mensaje);
+        try{
+            if(textoCarne.getText().isEmpty() || textoCodigo.getText().equals("   -   ")){
+                JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
             }
             else{
-                listaPrestamos = manejadorDevoluciones.obtenerPrestamos(codigoLibro, carne);
-                if(listaPrestamos.isEmpty()){
-                    JOptionPane.showMessageDialog(this, "No existe ningun prestamo resgistrado con esos datos");
+                carne = Integer.parseInt(textoCarne.getText());
+                codigoLibro = textoCodigo.getText();
+                mensaje = manejadorDevoluciones.validarExistenciaLibroEstudiante(codigoLibro, carne); 
+                if(!mensaje.equals("")){
+                    JOptionPane.showMessageDialog(this, mensaje);
                 }
                 else{
-                    this.inicializarSelectorPrestamo();
-                    this.inicializarDialog();
-                    this.limparAreasTexo();
+                    listaPrestamos = manejadorDevoluciones.obtenerPrestamos(codigoLibro, carne);
+                    if(listaPrestamos.isEmpty()){
+                     JOptionPane.showMessageDialog(this, "No existe ningun prestamo resgistrado con esos datos");
+                    }
+                    else{
+                        this.inicializarSelectorPrestamo();
+                        this.inicializarDialog();
+                        this.limparAreasTexo();
+                    }
                 }
             }
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Numero de carne no valido");
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
     /*

@@ -12,18 +12,20 @@ public class Prestamo implements Serializable{
     private Date fechaPrestamo;
     private Date fechaLimite;
     private boolean activo;
-    private int cantidadPagada;
+    private int cantidadCuota;
+    private int cantidadMora;
 
-    public Prestamo(int codigoPrestamo, String codigolibro, int carnet, Date fechaPrestamo, Date fechaLimite, boolean activo, int cantidadPagada) {
+    public Prestamo(int codigoPrestamo, String codigolibro, int carnet, Date fechaPrestamo, Date fechaLimite, boolean activo, int cantidadCuota, int cantidadMora) {
         this.codigoPrestamo =codigoPrestamo;
         this.codigolibro = codigolibro;
         this.carne = carnet;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaLimite = fechaLimite;
         this.activo = activo;
-        this.cantidadPagada = cantidadPagada;
+        this.cantidadCuota = cantidadCuota;
+        this.cantidadMora = cantidadMora;
     }
-    
+
     public int getCodigoPrestamo() {
         return codigoPrestamo;
     }
@@ -48,6 +50,14 @@ public class Prestamo implements Serializable{
         return activo;
     }
 
+    public int getCantidadCuota() {
+        return cantidadCuota;
+    }
+
+    public int getCantidadMora() {
+        return cantidadMora;
+    }
+
     public void setCodigoPrestamo(int codigoPrestamo) {
         this.codigoPrestamo = codigoPrestamo;
     }
@@ -56,8 +66,8 @@ public class Prestamo implements Serializable{
         this.codigolibro = codigolibro;
     }
 
-    public void setCarne(int carnet) {
-        this.carne = carnet;
+    public void setCarne(int carne) {
+        this.carne = carne;
     }
 
     public void setFechaPrestamo(Date fechaPrestamo) {
@@ -72,11 +82,15 @@ public class Prestamo implements Serializable{
         this.activo = activo;
     }
 
-    public int getCantidadPagada() {
-        return cantidadPagada;
+    public void setCantidadCuota(int cantidadCuota) {
+        this.cantidadCuota = cantidadCuota;
     }
 
-    public void setCantidadPagada(int cantidadPagada) {
-        this.cantidadPagada = cantidadPagada;
-    }    
+    public void setCantidadMora(int cantidadMora) {
+        this.cantidadMora = cantidadMora;
+    }
+    
+    
+    
+   
 }

@@ -35,7 +35,7 @@ public class ManejadorArchivoEntrada {
     private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
-    private String errores = "";
+    private String errores;
     
     
     /*
@@ -43,12 +43,13 @@ public class ManejadorArchivoEntrada {
     a leer y el tiempo a implementar en el hilo. Inicia un hilo previo a la lectura del archivo. Detecta
     las palabras "LIBRO", "ESTUDIANTE" y "PRESTAMO" y sentencia la accion a realizar.
     */
-    public void leerArchivo(File archivoSeleccionado, long tiempo) throws FileNotFoundException, IOException{
-        Runnable thread = new Runnable() {
+    public String leerArchivo(File archivoSeleccionado, long tiempo) throws FileNotFoundException, IOException{
+        errores = "";
+   /*    Runnable thread = new Runnable() {
             @Override
-            public void run(){
+            public void run(){*/
                 crearCarpeta();
-                try{Thread.currentThread().sleep(tiempo);
+              //  try{Thread.currentThread().sleep(tiempo);
                     BufferedReader bufferLeer = new BufferedReader(new  FileReader(archivoSeleccionado));
                     String linea = bufferLeer.readLine();
                     while (linea != null) {
@@ -66,13 +67,12 @@ public class ManejadorArchivoEntrada {
                         }
                         linea  = bufferLeer.readLine();
                     }
-                } catch(Exception e){ }
+            /*  } catch(Exception e){ }
             }
         };
-        //System.out.println(errores);
         Thread hilo = new Thread(thread);
-        hilo.start();
-        
+        hilo.start();*/
+        return errores;
     }
     
     /*
@@ -98,7 +98,7 @@ public class ManejadorArchivoEntrada {
                     if (linea.contains(TITULO)) {
                         titulo = linea.replaceAll(TITULO, "");
                     } else {
-                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         i=4; 
                     }
                     break;
@@ -107,7 +107,7 @@ public class ManejadorArchivoEntrada {
                         autor= linea.replaceAll(AUTOR, "");
                     } else {
                         i=4;
-                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                     }
                     break;
                 case 2:
@@ -115,7 +115,7 @@ public class ManejadorArchivoEntrada {
                         codigo = linea.replaceAll(CODIGO, "");
                     } else {
                         i=4;
-                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                     }
                     break;
                 case 3:
@@ -124,10 +124,10 @@ public class ManejadorArchivoEntrada {
                         linea = linea.replaceAll(CANTIDAD, "");
                         cantidadDeCopias = Integer.parseInt(linea);
                     } else {
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("Formato incorrecto");
+                        errores = errores + "Error, formato incorecto: " + linea + "\n";
                     }
                     break;
             }
@@ -153,7 +153,7 @@ public class ManejadorArchivoEntrada {
                             carne = Integer.parseInt(linea.replaceAll(CARNET, ""));
                         } else {
                             i=4;
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                         break;
                     case 1:
@@ -161,7 +161,7 @@ public class ManejadorArchivoEntrada {
                             nombre = linea.replaceAll(NOMBRE, "");
                         } else {
                             i=4;
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                         break;
                     case 2:
@@ -169,13 +169,13 @@ public class ManejadorArchivoEntrada {
                             codigoCarrera = Integer.parseInt(linea.replaceAll(CARRERA, ""));
                         } else {
                             i=4;
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                         break;
                 }
             } catch (NumberFormatException e) {
                 i=4;
-                System.out.println("Formato incorrecto");
+                errores = errores + "Formato incorrecto " + linea + "\n";
             }
         }
         if (nombre == null || carne == 0 || codigoCarrera == 0) {
@@ -199,7 +199,7 @@ public class ManejadorArchivoEntrada {
                         codigo = linea.replaceAll(CODIGOLIBRO, "");
                     } else {
                         i=4;
-                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                     }
                     break;
                 case 1:
@@ -208,11 +208,11 @@ public class ManejadorArchivoEntrada {
                             carnet = Integer.parseInt(linea.replaceAll(CARNET, ""));
                         } else {
                             i=4;
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                     } catch (NumberFormatException e) {
                         i=4;
-                        System.out.println("Error de formato");
+                        errores = errores + "Error de formato: " + linea + "\n";
                     }
                     break;
                 case 2:
@@ -220,7 +220,7 @@ public class ManejadorArchivoEntrada {
                         if (linea.contains(FECHA)) {
                             fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
                         } else {
-                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                            errores = errores + "Error, la instrucción no va en el orden que corresponde: " + linea + "\n";
                         }
                     } 
                     catch (ParseException ex) {
@@ -231,10 +231,11 @@ public class ManejadorArchivoEntrada {
         }
         if (codigo == null || carnet == 0 || fechaPrestamo == null) {
             errores = errores + "Error, no se a ejecutado el comando 'PRESTAMO' por falta del algun campo obligatorio.\n";
-            System.out.println("Error Prestamo");
         } else {
             String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo, false);
-            System.out.println(mensaje);
+            if(!mensaje.equals("Prestamo Realizado Exitosamente")){
+                errores = errores +" " +mensaje+ "\n";
+            }
         }
         
     }

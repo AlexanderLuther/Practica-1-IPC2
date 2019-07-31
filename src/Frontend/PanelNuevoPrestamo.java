@@ -311,18 +311,23 @@ public class PanelNuevoPrestamo extends javax.swing.JPanel {
     basado en la realizacion del proceso. Por ultimo se imprime en pantalla el mensaje recibido.
     */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if(textoCarne.getText().isEmpty() || textoCodigo.getText().equals("   -   ") || selectorFecha.getDatoFecha() == null){
-            JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
-        }
-        else{
-            carneEstudiante = Integer.parseInt(textoCarne.getText());
-            codigoLibro = textoCodigo.getText();
-            fechaPrestamo = selectorFecha.getDatoFecha();
-            mensaje = manejadorPrestamo.procesarPrestamo(carneEstudiante, codigoLibro, fechaPrestamo, true);
-            JOptionPane.showMessageDialog(this, mensaje);
-            if(mensaje.equals("Prestamo Realizado Exitosamente")){
-                this.limparAreasTexo();
+        try{
+            if(textoCarne.getText().isEmpty() || textoCodigo.getText().equals("   -   ") || selectorFecha.getDatoFecha() == null){
+                JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos obligatorios");
             }
+            else{
+                carneEstudiante = Integer.parseInt(textoCarne.getText());
+                codigoLibro = textoCodigo.getText();
+                fechaPrestamo = selectorFecha.getDatoFecha();
+                mensaje = manejadorPrestamo.procesarPrestamo(carneEstudiante, codigoLibro, fechaPrestamo, true);
+                JOptionPane.showMessageDialog(this, mensaje);
+                if(mensaje.equals("Prestamo Realizado Exitosamente")){
+                    this.limparAreasTexo();
+                }
+            }
+        }
+        catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Numero de carne no valido");
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 

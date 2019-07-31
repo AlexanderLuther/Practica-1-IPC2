@@ -8,8 +8,13 @@ import java.util.List;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
 
-public class Reporte1 extends javax.swing.JDialog {
-   
+
+/**
+ *
+ * @author bryan
+ */
+public class Reporte2 extends javax.swing.JDialog {
+    
     //Instancias utilizadas para llenar la tabla aplicando Beans Binding
     private List<Prestamo> listadoPrestamo;
     private ObservableList<Prestamo> observableList;
@@ -18,9 +23,10 @@ public class Reporte1 extends javax.swing.JDialog {
     private ManejadorArchivosBinarios<Prestamo> archivoPrestamo;
     private ManejadorBusqueda busqueda = new ManejadorBusqueda();
     
-
-    
-    public Reporte1(java.awt.Frame parent, boolean modal) {
+    /**
+     * Creates new form ReportePrestamoHecho
+     */
+    public Reporte2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.archivoPrestamo = new ManejadorArchivosBinarios<>();
         this.listadoPrestamo = new ArrayList<>();
@@ -65,7 +71,7 @@ public class Reporte1 extends javax.swing.JDialog {
     Metodo encargado de inicializar la lista con la cual se llenara la tabla
     */
     public void llenarTabla(){
-        listadoPrestamo = busqueda.busquedaPrestamosActuales(archivoPrestamo.leerListaArchivos(".pre"));
+        listadoPrestamo = busqueda.busquedaPrestamosMorosos(archivoPrestamo.leerListaArchivos(".pre"));
         actualizarObservableList(listadoPrestamo); 
     }
     
@@ -104,7 +110,7 @@ public class Reporte1 extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tabla);
 
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
-        lblTitulo.setText("Prestamos a Entregar Hoy");
+        lblTitulo.setText("Prestamos Morosos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -65,6 +65,13 @@ public class Reporte6 extends javax.swing.JDialog {
         observableList.clear();
         observableList.addAll(lista);
     }
+    /*
+    Metodo encargado de limpiar los campos de texto
+    */
+    public void limpiar(){
+        observableList.clear();
+        txtCantidadPrestamos.setText(null);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,6 +109,8 @@ public class Reporte6 extends javax.swing.JDialog {
 
         txtCantidadPrestamos.setEditable(false);
 
+        jTable1.setForeground(new java.awt.Color(0, 153, 153));
+
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${observableList}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${carne}"));
@@ -131,7 +140,7 @@ public class Reporte6 extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblPrestamosPorCarrera)
-                                .addGap(0, 43, Short.MAX_VALUE))
+                                .addGap(0, 244, Short.MAX_VALUE))
                             .addComponent(comboBoxCarreras, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonBuscar))

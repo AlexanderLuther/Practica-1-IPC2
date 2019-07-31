@@ -40,14 +40,14 @@
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="rSButtonIconI3" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rSButtonIconI2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rSButtonIconI1" alignment="0" min="-2" pref="512" max="-2" attributes="0"/>
+                          <Component id="botonReporte6" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonReporte5" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonReporte4" alignment="0" min="-2" pref="512" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="rSButtonIconI4" pref="512" max="32767" attributes="0"/>
-                          <Component id="rSButtonIconI5" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rSButtonIconI6" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonReporte1" pref="512" max="32767" attributes="0"/>
+                          <Component id="botonReporte2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="botonReporte3" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -57,24 +57,24 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <Component id="rSButtonIconI4" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="rSButtonIconI5" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="rSButtonIconI6" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="rSButtonIconI1" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="rSButtonIconI2" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="rSButtonIconI3" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonReporte6" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI1">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte4">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -89,10 +89,10 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rSButtonIconI1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte4ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI2">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte5">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -107,10 +107,10 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rSButtonIconI2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte5ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI3">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte6">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -125,10 +125,10 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rSButtonIconI3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte6ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI4">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -143,10 +143,10 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rSButtonIconI4ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI5">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte2">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -160,8 +160,11 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte2ActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="rojerusan.RSButtonIconI" name="rSButtonIconI6">
+        <Component class="rojerusan.RSButtonIconI" name="botonReporte3">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="99" red="0" type="rgb"/>
@@ -175,6 +178,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReporte3ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
