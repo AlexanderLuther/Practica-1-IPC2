@@ -18,7 +18,7 @@ import org.jdesktop.observablecollections.ObservableList;
  *
  * @author bryan
  */
-public class ReportePrestamosHechosCarrera extends javax.swing.JDialog {
+public class Reporte6 extends javax.swing.JDialog {
     private final String INGENIERIA = "Ingeniería";
     private final String MEDICINA = "Medicina";
     private final String DERECHO = "Derecho";
@@ -34,7 +34,7 @@ public class ReportePrestamosHechosCarrera extends javax.swing.JDialog {
     /**
      * Creates new form ReporteHechosCarrera
      */
-    public ReportePrestamosHechosCarrera(java.awt.Frame parent, boolean modal) {
+    public Reporte6(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.cantidadPrestamo = 0;
         this.listadoPrestamos = new ArrayList<>();

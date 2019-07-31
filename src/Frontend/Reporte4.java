@@ -13,7 +13,7 @@ import org.jdesktop.observablecollections.ObservableList;
  *
  * @author bryan
  */
-public class ReportePrestamoHecho extends javax.swing.JDialog {
+public class Reporte4 extends javax.swing.JDialog {
     private Estudiante estudiante;
     private List<Prestamo> listadoPrestamo;
     private ObservableList<Prestamo> observableList;
@@ -23,7 +23,7 @@ public class ReportePrestamoHecho extends javax.swing.JDialog {
     /**
      * Creates new form ReportePrestamoHecho
      */
-    public ReportePrestamoHecho(java.awt.Frame parent, boolean modal) {
+    public Reporte4(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.archivoEstudiante = new ManejadorArchivosBinarios<>();
         this.archivoPrestamo = new ManejadorArchivosBinarios<>();
