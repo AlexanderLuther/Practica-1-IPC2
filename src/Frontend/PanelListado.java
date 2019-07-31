@@ -3,97 +3,150 @@ package Frontend;
 import Backend.Estudiante;
 import Backend.Libro;
 import Backend.ManejadorArchivosBinarios;
+import Backend.ManejadorBusqueda;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.jdesktop.observablecollections.ObservableCollections;
+import org.jdesktop.observablecollections.ObservableList;
 
 public class PanelListado extends javax.swing.JPanel {
 
-    //Variables e instancias usadas por la clase
-    private ManejadorArchivosBinarios manejadorArchivos = new ManejadorArchivosBinarios();
-    private List <Estudiante> listadoEstudiantes = new ArrayList<>();
-    private List <Libro> listadoLibros = new ArrayList<>();
-    private String busquedaLibros;
-    private String busquedaEstudiantes;
-    private String libroModificar;
-    private int nuevaCantidadCopias;
-    private Libro libro;
+     //Instancias utilizadas para llenar la tabla de estudiantes utilizando Beans binding
+    private List<Estudiante> listadoEstudiantes = new ArrayList<>();
+    private ObservableList<Estudiante> observableListEstudiantes = ObservableCollections.observableList(listadoEstudiantes);
+    private ManejadorArchivosBinarios<Estudiante> manejadorArchivoEstudiante = new ManejadorArchivosBinarios<>();
     
-    public PanelListado() {
+    //Instancias utilizadas para llenar la tabla de libros utilizando Beans binding
+    private List<Libro> listadoLibros = new ArrayList<>();
+    private ObservableList<Libro> observableListLibros = ObservableCollections.observableList(listadoLibros);
+    private ManejadorArchivosBinarios<Libro> manejadorArchivoLibro = new ManejadorArchivosBinarios<>();
+    
+    //Variables e instancias usadas por la clase.
+    private ManejadorBusqueda manejadorBusqueda = new ManejadorBusqueda();
+    private List<Libro> listadoLibrosFiltrados = new ArrayList<>();
+    private List<Estudiante> listadoEstudiantesFiltrados = new ArrayList<>();
+    private Libro libro;
+    private String libroBusqueda;
+    private String estudianteBusqueda;
+    private int indice;
+    
+     public PanelListado() {
         initComponents();
     }
-    
-    /*
-    Metodo encargado de obtener el listado de libros almacenados en la base de datos,
-    ordena de menor a mayor segun el codigo de los libros y crea el listado en el 
-    JComboBox.
-    */
-    public void llenarListaLibros(){
-        listadoLibros = manejadorArchivos.leerListaArchivos(".lib");
-        Collections.sort(listadoLibros);
-        for(int i = 0; i < listadoLibros.size(); i++){
-            selectorLibros.addItem(listadoLibros.get(i).getTitulo());
-        }
+
+    //Metodos utilizados para la tabla de estudiantes utilizando Beans binding
+    public List<Estudiante> getListadoEstudiante() {
+        return listadoEstudiantes;
+    }
+
+    public void setListadoEstudiante(List<Estudiante> listadoEstudiantes) {
+        this.listadoEstudiantes = listadoEstudiantes;
+    }
+
+    public ObservableList<Estudiante> getObservableListEstudiantes() {
+        return observableListEstudiantes;
+    }
+
+    public void setObservableList(ObservableList<Estudiante> observableList) {
+        this.observableListEstudiantes = observableList;
     }
     
+    public void actualizarObservableListEstudiantes(List<Estudiante> estudiantesListObservable) {
+        this.observableListEstudiantes.clear();
+        this.observableListEstudiantes.addAll(estudiantesListObservable);
+    }
+    
+    //Metodos utilizados para la tabla de libros utilizando Beans binding
+    public List<Libro> getListadoLibro() {
+        return listadoLibros;
+    }
+
+    public void setListadoLibro(List<Libro> listadoLibros) {
+        this.listadoLibros = listadoLibros;
+    }
+
+    public ObservableList<Libro> getObservableListLibros() {
+        return observableListLibros;
+    }
+
+    public void setObservableListLibros(ObservableList<Libro> observableList) {
+        this.observableListLibros = observableList;
+    }
+    
+    public void actualizarObservableListLibros(List<Libro> librosListObservable) {
+        this.observableListLibros.clear();
+        this.observableListLibros.addAll(librosListObservable);
+    }
+    
+    
     /*
-    Metodo encargado de obtener el listado de estudiantes almacenados en la base de datos,
-    ordena de menor a mayor segun el carne de los estudiantes y crea el listado en el 
-    JComboBox.
+    Metodo encargado de obtener la lista de estudiantes con la cual llenar la tabla 
+    correspondiente.
     */
-    public void llenarListaEstudiantes(){
-        listadoEstudiantes = manejadorArchivos.leerListaArchivos(".est");
+    public void llenarTablaEstudiantesCompletos(){
+        listadoEstudiantes = manejadorArchivoEstudiante.leerListaArchivos(".est");
         Collections.sort(listadoEstudiantes);
-        for(int i = 0; i < listadoEstudiantes.size(); i++){
-            selectorEstudiantes.addItem(listadoEstudiantes.get(i).getNombre());
-        }
+        actualizarObservableListEstudiantes(listadoEstudiantes);    
     }
     
     /*
-    Metodo encargado de limpiar el JComboBox de libros
+    Metodo encargado de obtener la lista de libros con la cual llenar la tabla 
+    correspondiente.
     */
-    public void limpiarListaLibros(){
-        selectorLibros.removeAllItems();
+    public void llenarTablaLibrosCompletos(){
+        listadoLibros = manejadorArchivoLibro.leerListaArchivos("lib");
+        Collections.sort(listadoLibros);
+        actualizarObservableListLibros(listadoLibros);
     }
     
     /*
-    Metodo encargado de limpiar el JComboBox de estudiantes
+    Metodo encargado de obtener la lista filtrada de libros con la cual llenar 
+    la tabla correspondiente.
     */
-    public void limpiarListaEstudiantes(){
-        selectorEstudiantes.removeAllItems();
+    private void llenarTablaLibrosFiltrados(List libros){
+        Collections.sort(libros);
+        actualizarObservableListLibros(libros);
     }
+    
+    /*
+    Metodo encargado de obtener la lista filtrada de estudiantes con la cual llenar
+    la tabla correspondiente.
+    */
+    private void llenarTablaEstudiantesFiltrados(List estudiantes){
+        Collections.sort(estudiantes);
+        actualizarObservableListEstudiantes(estudiantes);
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jPanel4 = new javax.swing.JPanel();
         grupoLibros = new javax.swing.ButtonGroup();
         grupoEstudiantes = new javax.swing.ButtonGroup();
+        dialogoCopias = new javax.swing.JDialog();
+        textoCopias = new rojeru_san.RSMTextFull();
+        botonAceptar = new rojerusan.RSButtonIconI();
+        etiquetaMensaje = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        filtroTituloLibro = new javax.swing.JRadioButton();
-        filtroAutorLibro = new javax.swing.JRadioButton();
-        filtroCodigoLibro = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         textoBusquedaLibros = new rojeru_san.RSMTextFull();
         botonBuscarLibros = new rojerusan.RSButtonIconI();
-        selectorLibros = new javax.swing.JComboBox<>();
         botonModificar = new rojeru_san.RSButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaLibros = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         botonBuscarEstudiantes = new rojerusan.RSButtonIconI();
         textoBusquedaEstudiantes = new rojeru_san.RSMTextFull();
-        selectorEstudiantes = new javax.swing.JComboBox<>();
-        jPanel8 = new javax.swing.JPanel();
-        filtroNombreEstudiante = new javax.swing.JRadioButton();
-        filtroCarneEstudiante = new javax.swing.JRadioButton();
-        filtroCodigoEstudiante = new javax.swing.JRadioButton();
-        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaEstudiantes = new javax.swing.JTable();
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -106,6 +159,59 @@ public class PanelListado extends javax.swing.JPanel {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 88, Short.MAX_VALUE)
+        );
+
+        dialogoCopias.setTitle("Modificar Copias");
+        dialogoCopias.setMinimumSize(new java.awt.Dimension(384, 189));
+        dialogoCopias.setResizable(false);
+
+        textoCopias.setPlaceholder("Ingrese la nueva cantidad de copias...");
+        textoCopias.setSoloNumeros(true);
+
+        botonAceptar.setBackground(new java.awt.Color(204, 204, 204));
+        botonAceptar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        botonAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/comprobar.png"))); // NOI18N
+        botonAceptar.setText("ACEPTAR");
+        botonAceptar.setColorHover(new java.awt.Color(0, 204, 0));
+        botonAceptar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAceptarActionPerformed(evt);
+            }
+        });
+
+        etiquetaMensaje.setForeground(new java.awt.Color(255, 0, 0));
+        etiquetaMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaMensaje.setText("No se indico ninguna cantidad");
+
+        javax.swing.GroupLayout dialogoCopiasLayout = new javax.swing.GroupLayout(dialogoCopias.getContentPane());
+        dialogoCopias.getContentPane().setLayout(dialogoCopiasLayout);
+        dialogoCopiasLayout.setHorizontalGroup(
+            dialogoCopiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogoCopiasLayout.createSequentialGroup()
+                .addGroup(dialogoCopiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dialogoCopiasLayout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(textoCopias, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(dialogoCopiasLayout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(52, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogoCopiasLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(etiquetaMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        dialogoCopiasLayout.setVerticalGroup(
+            dialogoCopiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogoCopiasLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(textoCopias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(etiquetaMensaje)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         setBackground(new java.awt.Color(204, 204, 204));
@@ -122,87 +228,8 @@ public class PanelListado extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(31, 186, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(16, 264, 0, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
-
-        jPanel7.setBackground(new java.awt.Color(204, 204, 204));
-
-        filtroTituloLibro.setBackground(new java.awt.Color(204, 204, 204));
-        grupoLibros.add(filtroTituloLibro);
-        filtroTituloLibro.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroTituloLibro.setForeground(new java.awt.Color(0, 153, 153));
-        filtroTituloLibro.setText("Titulo");
-        filtroTituloLibro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroTituloLibroActionPerformed(evt);
-            }
-        });
-
-        filtroAutorLibro.setBackground(new java.awt.Color(204, 204, 204));
-        grupoLibros.add(filtroAutorLibro);
-        filtroAutorLibro.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroAutorLibro.setForeground(new java.awt.Color(0, 153, 153));
-        filtroAutorLibro.setText("Autor");
-        filtroAutorLibro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroAutorLibroActionPerformed(evt);
-            }
-        });
-
-        filtroCodigoLibro.setBackground(new java.awt.Color(204, 204, 204));
-        grupoLibros.add(filtroCodigoLibro);
-        filtroCodigoLibro.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroCodigoLibro.setForeground(new java.awt.Color(0, 153, 153));
-        filtroCodigoLibro.setText("Codigo");
-        filtroCodigoLibro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroCodigoLibroActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Filtrar por:");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(filtroTituloLibro)
-                        .addGap(18, 18, 18)
-                        .addComponent(filtroAutorLibro)
-                        .addGap(18, 18, 18)
-                        .addComponent(filtroCodigoLibro)))
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(4, 4, 4)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filtroTituloLibro)
-                    .addComponent(filtroAutorLibro)
-                    .addComponent(filtroCodigoLibro))
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 36;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 154, 0, 0);
-        jPanel1.add(jPanel7, gridBagConstraints);
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -238,16 +265,14 @@ public class PanelListado extends javax.swing.JPanel {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectorLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(botonBuscarLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoBusquedaLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(32, 32, Short.MAX_VALUE))
+                .addComponent(botonBuscarLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoBusquedaLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(206, 206, 206))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,22 +282,74 @@ public class PanelListado extends javax.swing.JPanel {
                     .addComponent(textoBusquedaLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBuscarLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addComponent(selectorLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
+                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 57;
+        gridBagConstraints.ipady = -26;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 115, 0, 0);
+        jPanel1.add(jPanel5, gridBagConstraints);
+
+        tablaLibros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        tablaLibros.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
+        tablaLibros.setForeground(new java.awt.Color(0, 153, 153));
+
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${observableListLibros}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, tablaLibros);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${titulo}"));
+        columnBinding.setColumnName("Titulo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${autor}"));
+        columnBinding.setColumnName("Autor");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigo}"));
+        columnBinding.setColumnName("Codigo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${editorial}"));
+        columnBinding.setColumnName("Editorial");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cantidadCopias}"));
+        columnBinding.setColumnName("Copias");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaPublicacion}"));
+        columnBinding.setColumnName("Publicacion");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane2.setViewportView(tablaLibros);
+        if (tablaLibros.getColumnModel().getColumnCount() > 0) {
+            tablaLibros.getColumnModel().getColumn(0).setPreferredWidth(250);
+            tablaLibros.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tablaLibros.getColumnModel().getColumn(2).setPreferredWidth(75);
+            tablaLibros.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tablaLibros.getColumnModel().getColumn(4).setPreferredWidth(60);
+            tablaLibros.getColumnModel().getColumn(5).setPreferredWidth(100);
+        }
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipady = -4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 607;
+        gridBagConstraints.ipady = 250;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 54, 233, 30);
-        jPanel1.add(jPanel5, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 61, 89, 60);
+        jPanel1.add(jScrollPane2, gridBagConstraints);
 
         add(jPanel1);
 
@@ -286,9 +363,8 @@ public class PanelListado extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(28, 148, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(16, 260, 0, 0);
         jPanel2.add(jLabel2, gridBagConstraints);
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 204));
@@ -313,14 +389,10 @@ public class PanelListado extends javax.swing.JPanel {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(selectorEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(botonBuscarEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoBusquedaEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)))
+                .addGap(57, 57, 57)
+                .addComponent(botonBuscarEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoBusquedaEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -330,233 +402,169 @@ public class PanelListado extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(botonBuscarEstudiantes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textoBusquedaEstudiantes, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(selectorEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 24;
         gridBagConstraints.ipady = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(20, 50, 223, 36);
+        gridBagConstraints.insets = new java.awt.Insets(18, 130, 0, 0);
         jPanel2.add(jPanel6, gridBagConstraints);
 
-        jPanel8.setBackground(new java.awt.Color(204, 204, 204));
+        tablaEstudiantes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        tablaEstudiantes.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
+        tablaEstudiantes.setForeground(new java.awt.Color(0, 153, 153));
 
-        filtroNombreEstudiante.setBackground(new java.awt.Color(204, 204, 204));
-        grupoEstudiantes.add(filtroNombreEstudiante);
-        filtroNombreEstudiante.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroNombreEstudiante.setForeground(new java.awt.Color(0, 153, 153));
-        filtroNombreEstudiante.setText("Nombre");
-        filtroNombreEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroNombreEstudianteActionPerformed(evt);
-            }
-        });
-
-        filtroCarneEstudiante.setBackground(new java.awt.Color(204, 204, 204));
-        grupoEstudiantes.add(filtroCarneEstudiante);
-        filtroCarneEstudiante.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroCarneEstudiante.setForeground(new java.awt.Color(0, 153, 153));
-        filtroCarneEstudiante.setText("Carne");
-        filtroCarneEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroCarneEstudianteActionPerformed(evt);
-            }
-        });
-
-        filtroCodigoEstudiante.setBackground(new java.awt.Color(204, 204, 204));
-        grupoEstudiantes.add(filtroCodigoEstudiante);
-        filtroCodigoEstudiante.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        filtroCodigoEstudiante.setForeground(new java.awt.Color(0, 153, 153));
-        filtroCodigoEstudiante.setText("Codigo");
-        filtroCodigoEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtroCodigoEstudianteActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Filtrar por:");
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(filtroNombreEstudiante)
-                        .addGap(18, 18, 18)
-                        .addComponent(filtroCarneEstudiante)
-                        .addGap(18, 18, 18)
-                        .addComponent(filtroCodigoEstudiante)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addGap(2, 2, 2)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filtroNombreEstudiante)
-                    .addComponent(filtroCarneEstudiante)
-                    .addComponent(filtroCodigoEstudiante))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${observableListEstudiantes}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, tablaEstudiantes);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
+        columnBinding.setColumnName("Nombre");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${carne}"));
+        columnBinding.setColumnName("Carne");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigoCarrera}"));
+        columnBinding.setColumnName("Codigo Carrera");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaNacimiento}"));
+        columnBinding.setColumnName("Fecha Nacimiento");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(tablaEstudiantes);
+        if (tablaEstudiantes.getColumnModel().getColumnCount() > 0) {
+            tablaEstudiantes.getColumnModel().getColumn(0).setResizable(false);
+            tablaEstudiantes.getColumnModel().getColumn(0).setPreferredWidth(300);
+            tablaEstudiantes.getColumnModel().getColumn(1).setResizable(false);
+            tablaEstudiantes.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tablaEstudiantes.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tablaEstudiantes.getColumnModel().getColumn(3).setPreferredWidth(100);
+        }
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = 12;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 633;
+        gridBagConstraints.ipady = 279;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 160, 0, 0);
-        jPanel2.add(jPanel8, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 47, 83, 46);
+        jPanel2.add(jScrollPane1, gridBagConstraints);
 
         add(jPanel2);
+
+        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     /*
-    Metodo encargado de realizar una busqueda en los elementos de la lista
+    Metodo encargado de realizar una busqueda en los elementos de la lista y refrescar la tabla con 
+    los elementos encontrados.
     */
     private void botonBuscarEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarEstudiantesActionPerformed
-       if(textoBusquedaEstudiantes.getText().isEmpty()){
-           JOptionPane.showMessageDialog(this, "No se ha ingresado ningun caracter");
-       }
-       else{
-           busquedaEstudiantes = textoBusquedaEstudiantes.getText();
-           
-       }
+        if(textoBusquedaEstudiantes.getText().isEmpty()){
+            this.llenarTablaEstudiantesCompletos();
+        }
+        else{
+            listadoEstudiantesFiltrados.clear();
+            estudianteBusqueda = textoBusquedaEstudiantes.getText();   
+            listadoEstudiantesFiltrados = manejadorBusqueda.busquedaEstudiante(listadoEstudiantes, estudianteBusqueda);
+            this.llenarTablaEstudiantesFiltrados(listadoEstudiantesFiltrados);
+        }
     }//GEN-LAST:event_botonBuscarEstudiantesActionPerformed
+
+    private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
+        indice = tablaLibros.getSelectedRow();
+        if(indice == -1){
+        JOptionPane.showMessageDialog(this, "No se selecciono ningun libro");
+    }
+    else{
+        if(listadoLibros.isEmpty()){
+            libro = listadoLibrosFiltrados.get(indice);
+        }
+        else{
+            libro = listadoLibros.get(indice);
+        }
+        etiquetaMensaje.setVisible(false);
+        dialogoCopias.setLocationRelativeTo(null);
+        dialogoCopias.setVisible(true);
+    }    
+    }//GEN-LAST:event_botonModificarActionPerformed
     /*
-    Metodo encargado de realizar una busqueda en los elementos de la lista
+    Metodo encargado de realizar una busqueda en los elementos de la lista y refrescar la tabla con 
+    los elementos encontrados.
     */
     private void botonBuscarLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarLibrosActionPerformed
         if(textoBusquedaLibros.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "No se ha ingresado ningun caracter");
-       }
-       else{
-            busquedaLibros = textoBusquedaLibros.getText();
-       }
+            this.llenarTablaLibrosCompletos();
+        }
+        else{
+            listadoLibrosFiltrados.clear();
+            libroBusqueda = textoBusquedaLibros.getText();   
+            listadoLibrosFiltrados = manejadorBusqueda.busquedaLibro(listadoLibros, libroBusqueda);
+            this.llenarTablaLibrosFiltrados(listadoLibrosFiltrados);
+            listadoLibros.clear();
+        }
     }//GEN-LAST:event_botonBuscarLibrosActionPerformed
     /*
-    Metodo encargado de recargar la lista de libros y presentarla segun el autor del libro
+    Metodo encargado de obtener la cantidad de copias y reescribir el objeto correspondiente.
+    Por ultimo limpia el area de texto y manda a actualizar la lista enlazada a la tabla de 
+    libros.
     */
-    private void filtroAutorLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroAutorLibroActionPerformed
-        limpiarListaLibros();
-        for(int i = 0; i < listadoLibros.size(); i++){
-            selectorLibros.addItem(listadoLibros.get(i).getAutor());
-        }    
-    }//GEN-LAST:event_filtroAutorLibroActionPerformed
-    /*
-    Metodo encargado de recargar la lista de libros y presentarla segun el titulo del libro
-    */
-    private void filtroTituloLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroTituloLibroActionPerformed
-        limpiarListaLibros();
-        for(int i = 0; i < listadoLibros.size(); i++){
-            selectorLibros.addItem(listadoLibros.get(i).getTitulo());
+    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
+        if(textoCopias.getText().isEmpty()){
+            etiquetaMensaje.setVisible(true);
         }
-    }//GEN-LAST:event_filtroTituloLibroActionPerformed
-    /*
-    Metodo encargado de recargar la lista de libros y presentarla segun el codigo del libro
-    */
-    private void filtroCodigoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroCodigoLibroActionPerformed
-        limpiarListaLibros();
-        for(int i = 0; i < listadoLibros.size(); i++){
-            selectorLibros.addItem(listadoLibros.get(i).getCodigo());
-        }
-    }//GEN-LAST:event_filtroCodigoLibroActionPerformed
-    /*
-    Metodo encargado de recargar la lista de estudiantes y presentarla segun el nombre del estudiante
-    */
-    private void filtroNombreEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroNombreEstudianteActionPerformed
-        limpiarListaEstudiantes();
-        for(int i = 0; i < listadoEstudiantes.size(); i++){
-            selectorEstudiantes.addItem(listadoEstudiantes.get(i).getNombre());
-        }
-    }//GEN-LAST:event_filtroNombreEstudianteActionPerformed
-    /*
-    Metodo encargado de recargar la lista de estudiantes y presentarla segun el carne del estudiante
-    */
-    private void filtroCarneEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroCarneEstudianteActionPerformed
-       limpiarListaEstudiantes();
-        for(int i = 0; i < listadoEstudiantes.size(); i++){
-            selectorEstudiantes.addItem(String.valueOf(listadoEstudiantes.get(i).getCarne()));
-        }
-    }//GEN-LAST:event_filtroCarneEstudianteActionPerformed
-    /*
-    Metodo encargado de recargar la lista de estudiantes y presentarla segun el cidigo de carrera del estudiante
-    */
-    private void filtroCodigoEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroCodigoEstudianteActionPerformed
-       limpiarListaEstudiantes();
-        for(int i = 0; i < listadoEstudiantes.size(); i++){
-            selectorEstudiantes.addItem(String.valueOf(listadoEstudiantes.get(i).getCodigoCarrera()));
-        }
-    }//GEN-LAST:event_filtroCodigoEstudianteActionPerformed
-    /*
-    Metodo encargado de obtener el nombre del item seleccionado en el JComboBox de libros y realizar una busqueda en la lista
-    de libros. Al encontrar el libro se extraen sus atributos para crear una nueva instancia del mismo pero con la cantidad 
-    de copias nueva. Por ultimo se reescribe el archivo binario correspondiente al libro seleccionado.
-    */
-
-    private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
-        libroModificar = selectorLibros.getSelectedItem().toString();
-        for(int i = 0; i < listadoLibros.size(); i++){
-            if(listadoLibros.get(i).getCodigo().equals(libroModificar) || listadoLibros.get(i).getTitulo().equals(libroModificar) || listadoLibros.get(i).getAutor().equals(libroModificar)){
-                JOptionPane.showMessageDialog(this, "Numero actual de copias: " + listadoLibros.get(i).getCantidadCopias());
-                try{
-                    nuevaCantidadCopias = Integer.parseInt(JOptionPane.showInputDialog(this,"Ingrese la nueva cantidad de copias"));
-                    libro = new Libro(listadoLibros.get(i).getCodigo(), listadoLibros.get(i).getAutor(), listadoLibros.get(i).getTitulo(),
-                                      nuevaCantidadCopias, listadoLibros.get(i).getFechaPublicacion(), listadoLibros.get(i).getEditorial());
-                    manejadorArchivos.crearArchivo(libro, "LIBRO", listadoLibros.get(i).getCodigo(), ".lib");
-                    JOptionPane.showMessageDialog(this, "Cantidad modificada exitosamente");
-                    limpiarListaLibros();
-                    llenarListaLibros();
-                    
-                }
-                catch (NumberFormatException e){
-                    JOptionPane.showMessageDialog(this, "No se modifico la cantidad de copias del libro: "+ listadoLibros.get(i).getTitulo());
-                }
+        else{
+            libro.setCantidadCopias(Integer.parseInt(textoCopias.getText()));
+            manejadorArchivoLibro.crearArchivo(libro, "LIBRO", libro.getCodigo(), ".lib");
+            dialogoCopias.setVisible(false);
+            textoCopias.setText(null);
+            JOptionPane.showMessageDialog(this, "Cantidad de Copias Modificada Exitosamente");
+            etiquetaMensaje.setVisible(false);
+            if(listadoLibros.isEmpty()){
+                llenarTablaLibrosFiltrados(listadoLibrosFiltrados);
+            }
+            else{
+                llenarTablaLibrosCompletos();
             }
         }
-    }//GEN-LAST:event_botonModificarActionPerformed
+    }//GEN-LAST:event_botonAceptarActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojerusan.RSButtonIconI botonAceptar;
     private rojerusan.RSButtonIconI botonBuscarEstudiantes;
     private rojerusan.RSButtonIconI botonBuscarLibros;
     private rojeru_san.RSButton botonModificar;
-    private javax.swing.JRadioButton filtroAutorLibro;
-    private javax.swing.JRadioButton filtroCarneEstudiante;
-    private javax.swing.JRadioButton filtroCodigoEstudiante;
-    private javax.swing.JRadioButton filtroCodigoLibro;
-    private javax.swing.JRadioButton filtroNombreEstudiante;
-    private javax.swing.JRadioButton filtroTituloLibro;
+    private javax.swing.JDialog dialogoCopias;
+    private javax.swing.JLabel etiquetaMensaje;
     private javax.swing.ButtonGroup grupoEstudiantes;
     private javax.swing.ButtonGroup grupoLibros;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JComboBox<String> selectorEstudiantes;
-    private javax.swing.JComboBox<String> selectorLibros;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablaEstudiantes;
+    private javax.swing.JTable tablaLibros;
     private rojeru_san.RSMTextFull textoBusquedaEstudiantes;
     private rojeru_san.RSMTextFull textoBusquedaLibros;
+    private rojeru_san.RSMTextFull textoCopias;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

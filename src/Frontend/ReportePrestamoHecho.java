@@ -66,7 +66,6 @@ public class ReportePrestamoHecho extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        jRadioButton1 = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         lblTitulo = new javax.swing.JLabel();
@@ -77,8 +76,6 @@ public class ReportePrestamoHecho extends javax.swing.JDialog {
         txtEstudiante = new javax.swing.JTextField();
         botonBuscar = new javax.swing.JButton();
         lblValidacion2 = new javax.swing.JLabel();
-
-        jRadioButton1.setText("jRadioButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -194,9 +191,9 @@ public class ReportePrestamoHecho extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCarnetKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCarnetKeyTyped
-        // TODO add your handling code here:
+      /*  // TODO add your handling code here:
         char value = evt.getKeyChar();
-        if (value <'0' || value >'9') evt.consume();
+        if (value <'0' || value >'9') evt.consume();*/
     }//GEN-LAST:event_txtCarnetKeyTyped
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
@@ -219,7 +216,6 @@ public class ReportePrestamoHecho extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblEstudiante;
     private javax.swing.JLabel lblTitulo;

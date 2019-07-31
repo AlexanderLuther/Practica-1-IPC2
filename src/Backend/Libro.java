@@ -29,19 +29,19 @@ public class Libro implements Serializable, Comparable<Libro>{
     public String getAutor() {
         return autor;
     }
-    
+
     public String getTitulo() {
         return titulo;
     }
-    
+
     public String getEditorial() {
         return editorial;
     }
-    
+
     public int getCantidadCopias() {
         return cantidadCopias;
     }
-    
+
     public Date getFechaPublicacion() {
         return fechaPublicacion;
     }
@@ -58,17 +58,19 @@ public class Libro implements Serializable, Comparable<Libro>{
         this.titulo = titulo;
     }
 
-    public void setEditorioal(String editorioal) {
-        this.editorial = editorioal;
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
     }
-    
+
     public void setCantidadCopias(int cantidadCopias) {
         this.cantidadCopias = cantidadCopias;
     }
-    
+
     public void setFechaPublicacion(Date fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
+
+   
 
     /*
     Metodo utilizado para ordenar una lista de objetos del tipo Libro por 
