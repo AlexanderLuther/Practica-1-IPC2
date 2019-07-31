@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 public class Prestamo implements Serializable{
-
+    
     private int codigoPrestamo;
     private String codigolibro;
     private int carne;
@@ -23,7 +23,7 @@ public class Prestamo implements Serializable{
         this.activo = activo;
         this.cantidadPagada = cantidadPagada;
     }
-
+    
     public int getCodigoPrestamo() {
         return codigoPrestamo;
     }

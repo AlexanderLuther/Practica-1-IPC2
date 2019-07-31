@@ -61,7 +61,6 @@ public class ManejadorPrestamo {
                         }
                     }
         //PASO 5----------------------------------------------------------------------------------------------------            
-                    
                     fechaLimitePrestamo = manejadorFechas.sumarDias(fechaPrestamo,2); 
                     prestamo = new Prestamo(0,libro.getCodigo(), estudiante.getCarne(), fechaPrestamo, fechaLimitePrestamo,true, 0);
                     guardarPrestamo(prestamo);

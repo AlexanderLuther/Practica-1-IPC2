@@ -35,7 +35,6 @@ public class ManejadorArchivoEntrada {
     private ManejadorArchivosBinarios<Libro> archivoLibro = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Estudiante> archivoEstudiante = new ManejadorArchivosBinarios<>();
     private ManejadorArchivosBinarios<Prestamo> archivoPrestamo = new ManejadorArchivosBinarios<>();
-    private Date fechaLimite;
     private String errores = "";
     
     
@@ -86,60 +85,105 @@ public class ManejadorArchivoEntrada {
             carpeta.mkdir();
         }
     }
- 
+    
     public void leerLibro(BufferedReader buffer, String linea) throws IOException {
         String codigo = null;
-        String autor = "Desconocido";
-        String titulo = "Sin Titulo";
-        int cantidadDeCopias = 0;
+        String autor = null;
+        String titulo = null;
+        int cantidadDeCopias = -1;
         for (int i = 0; i < 4; i++) {
             linea  = buffer.readLine();
-                switch (i) {
-                    case 0:
-                            linea = linea.replaceAll(TITULO, "");
-                            titulo = linea;
-                        break;
-                    case 1:
-                            linea = linea.replaceAll(AUTOR, "");
-                            autor = linea;
-                        break;
-                    case 2:
-                            linea = linea.replaceAll(CODIGO, "");
-                            codigo = linea;
-                        break;
-                    case 3:
-                            linea = linea.replaceAll(CANTIDAD, "");
-                            cantidadDeCopias = Integer.parseInt(linea);
-                        break;
-                }
+            switch (i) {
+                case 0:
+                    if (linea.contains(TITULO)) {
+                        titulo = linea.replaceAll(TITULO, "");
+                    } else {
+                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        i=4; 
+                    }
+                    break;
+                case 1:
+                    if (linea.contains(AUTOR)) {
+                        autor= linea.replaceAll(AUTOR, "");
+                    } else {
+                        i=4;
+                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                    }
+                    break;
+                case 2:
+                    if (linea.contains(CODIGO)) {
+                        codigo = linea.replaceAll(CODIGO, "");
+                    } else {
+                        i=4;
+                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                    }
+                    break;
+                case 3:
+                    try {
+                        if (linea.contains(CANTIDAD)) {
+                        linea = linea.replaceAll(CANTIDAD, "");
+                        cantidadDeCopias = Integer.parseInt(linea);
+                    } else {
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Formato incorrecto");
+                    }
+                    break;
+            }
         }
+        if (codigo == null || autor == null || titulo == null || cantidadDeCopias == -1) {
+            errores = errores + "Error, no se a ejecutado el comando 'LIBRO' por falta del algun campo obligatorio.\n";
+        } else {
             libro = new Libro(codigo, autor, titulo, cantidadDeCopias, null,"");
             archivoLibro.crearArchivo(libro, LIBRO, libro.getCodigo(), ".lib"); 
+        }
     }
-   
     
     public void leerEstudiante(BufferedReader buffer, String linea) throws IOException{
         String nombre = null;
         int carne = 0;
         int codigoCarrera = 0;
         for (int i = 0; i < 3; i++) {
+            try {
                 linea  = buffer.readLine();
                 switch (i) {
                     case 0:
-                        linea = linea.replaceAll(CARNET, "");
-                        carne = Integer.parseInt(linea);
+                        if (linea.contains(CARNET)) {
+                            carne = Integer.parseInt(linea.replaceAll(CARNET, ""));
+                        } else {
+                            i=4;
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
                         break;
                     case 1:
-                        linea = linea.replaceAll(NOMBRE, "");
-                        nombre = linea;
+                        if (linea.contains(NOMBRE)) {
+                            nombre = linea.replaceAll(NOMBRE, "");
+                        } else {
+                            i=4;
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
                         break;
                     case 2:
-                        codigoCarrera = Integer.parseInt(linea.replaceAll(CARRERA, ""));
+                        if (linea.contains(linea)) {
+                            codigoCarrera = Integer.parseInt(linea.replaceAll(CARRERA, ""));
+                        } else {
+                            i=4;
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
                         break;
                 }
+            } catch (NumberFormatException e) {
+                i=4;
+                System.out.println("Formato incorrecto");
+            }
         }
-        estudiante = new Estudiante(nombre, carne, codigoCarrera, null, null, null);
-        archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, Integer.toString(estudiante.getCarne()), ".est");
+        if (nombre == null || carne == 0 || codigoCarrera == 0) {
+            errores = errores + "Error, no se a ejecutado el comando 'ESTUDIANTE' por falta del algun campo obligatorio.\n";
+        } else {
+            estudiante = new Estudiante(nombre, carne, codigoCarrera, null, null, null);
+            archivoEstudiante.crearArchivo(estudiante, ESTUDIANTE, Integer.toString(estudiante.getCarne()), ".est");
+        }
     }
        
     public void leerPrestamo(BufferedReader buffer, String linea) throws IOException {
@@ -149,16 +193,35 @@ public class ManejadorArchivoEntrada {
         Date fechaPrestamo = null;
         for (int i = 0; i < 3; i++) {
             linea  = buffer.readLine();
-            switch (i) {
+            switch (i) {    
                 case 0:
-                    codigo = linea.replaceAll(CODIGOLIBRO, "");
-                break;
+                    if (linea.contains(CODIGOLIBRO)) {
+                        codigo = linea.replaceAll(CODIGOLIBRO, "");
+                    } else {
+                        i=4;
+                        System.out.println("Error, la instrucción no va en el orden que corresponde");
+                    }
+                    break;
                 case 1:
-                    carnet = Integer.parseInt(linea.replaceAll(CARNET, ""));
+                    try {
+                        if (linea.contains(CARNET)) {
+                            carnet = Integer.parseInt(linea.replaceAll(CARNET, ""));
+                        } else {
+                            i=4;
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
+                    } catch (NumberFormatException e) {
+                        i=4;
+                        System.out.println("Error de formato");
+                    }
                     break;
                 case 2:
                     try {
-                       fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
+                        if (linea.contains(FECHA)) {
+                            fechaPrestamo = formato.parse(linea.replaceAll(FECHA, ""));
+                        } else {
+                            System.out.println("Error, la instrucción no va en el orden que corresponde");
+                        }
                     } 
                     catch (ParseException ex) {
                         errores = errores + "Error en formato de fecha: " + linea + "\n";
@@ -166,6 +229,13 @@ public class ManejadorArchivoEntrada {
                     break;
             }
         }
-        String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo, false);
+        if (codigo == null || carnet == 0 || fechaPrestamo == null) {
+            errores = errores + "Error, no se a ejecutado el comando 'PRESTAMO' por falta del algun campo obligatorio.\n";
+            System.out.println("Error Prestamo");
+        } else {
+            String mensaje = realizarPrestamo.procesarPrestamo(carnet, codigo, fechaPrestamo, false);
+            System.out.println(mensaje);
+        }
+        
     }
 }

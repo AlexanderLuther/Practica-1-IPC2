@@ -2,15 +2,26 @@ package Frontend;
 
 import javax.swing.JFrame;
 
+<<<<<<< HEAD:src/Frontend/PanelReportes.java
 public class PanelReportes extends javax.swing.JPanel {
+=======
+/**
+ *
+ * @author helmuthluther
+ */
+public class PanelReporte extends javax.swing.JPanel {
 
-    
+    private ReportePrestamoActuales reportePrestamosActuales;
     private ReportePrestamoHecho reportePrestamoHecho;
+
     private Reporte1 reporte1;
+    private ReportePrestamosHechosCarrera reportePrestamosHechosCarrera;
     
-     public PanelReportes(JFrame framePrincipal) {
+     public PanelReporte(JFrame framePrincipal) {
         this.reportePrestamoHecho = new ReportePrestamoHecho(framePrincipal, true);
         this.reporte1 = new Reporte1(framePrincipal, true);
+        this.reportePrestamosActuales = new ReportePrestamoActuales(framePrincipal, true);
+        this.reportePrestamosHechosCarrera = new ReportePrestamosHechosCarrera(framePrincipal, true);
         initComponents();
     }
     
@@ -94,6 +105,32 @@ public class PanelReportes extends javax.swing.JPanel {
                         .addComponent(rSButtonIconI5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rSButtonIconI6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        rSButtonIconI2.setText("Libros Prestados a un estudiante");
+        rSButtonIconI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconI2ActionPerformed(evt);
+            }
+        });
+
+        rSButtonIconI3.setText("Prestamos hechos a cada carrera");
+        rSButtonIconI3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconI3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(421, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(rSButtonIconI3, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(rSButtonIconI1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(rSButtonIconI2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(206, 206, 206))
+>>>>>>> 4a30a9b6a79cdb00c94f25821e87cd4e56acf347:src/Frontend/PanelReporte.java
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,9 +162,21 @@ public class PanelReportes extends javax.swing.JPanel {
         reportePrestamoHecho.setVisible(true);
     }//GEN-LAST:event_rSButtonIconI1ActionPerformed
 
+
     private void rSButtonIconI4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI4ActionPerformed
         reporte1.setVisible(true);
     }//GEN-LAST:event_rSButtonIconI4ActionPerformed
+=======
+    private void rSButtonIconI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI2ActionPerformed
+        // TODO add your handling code here:
+        reportePrestamosActuales.setVisible(true);
+    }//GEN-LAST:event_rSButtonIconI2ActionPerformed
+
+    private void rSButtonIconI3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconI3ActionPerformed
+        // TODO add your handling code here:
+        reportePrestamosHechosCarrera.setVisible(true);
+    }//GEN-LAST:event_rSButtonIconI3ActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
